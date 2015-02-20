@@ -1,0 +1,1716 @@
+
+
+2012-05-29 18:32                  src/Card.java                   Page 1
+
+
+    1	/**
+    2	 A class which represents a card from a standard 52 card deck
+    3	 @author Joey Dewan
+    4	 @version 5/29/12 CS56 S12
+    5	  */
+    6	public class Card{
+    7		private int value;
+    8		private String suit;
+    9		
+   10		/** 2 argument constructor to initialize the value and the suit
+   11			@param value value of the card ranging from 2-14, 2 being 2 and 14 being ace
+   12			@param suit suit of the card(hearts,dimaonds,etc.)
+   13		*/
+   14		public Card(int value, String suit){
+   15			this.value=value;
+   16			this.suit=suit;
+   17		}
+   18		
+   19		/**
+   20			Returns the value of the card
+   21		*/
+   22		public int getValue(){
+   23			return this.value;
+   24		}
+   25		
+   26		/**
+   27			Returns the suit of the card
+   28		*/
+   29		public String getSuit(){
+   30			return this.suit;
+   31		}
+   32		
+   33		/**
+   34			Returns the string representation of the card
+   35		*/
+   36		public String toString(){
+   37			String s=""+value+suit;
+   38			return s;
+   39		}
+   40	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2012-05-29 18:48                  src/Deck.java                   Page 1
+
+
+    1	import java.util.*;
+    2	import java.math.*;
+    3	
+    4	/**
+    5		Class that represents a 52 card deck
+    6	*/
+    7	public class Deck {
+    8	
+    9		private ArrayList<Card> activeDeck;
+   10		private ArrayList<Card> discardPile;
+   11		private int cardsLeft=52;
+   12		
+   13		/**
+   14			No arg constructor that initialized the cards in activeDeck, sets
+   15			the number of cards left in the activeDeck to 52, and creates a new
+   16			arraylist of Cards called discardPile.
+   17		*/
+   18		public Deck(){
+   19			activeDeck=new ArrayList(Arrays.asList(new Card(2,"D"), new Card(2,"H"), 
+   20			new Card(2,"C"),new Card(2,"S"), new Card(3,"D"), new Card(3,"H"), 
+   21			new Card(3,"C"),new Card(3,"S"), new Card(4,"D"), new Card(4,"H"), 
+   22			new Card(4,"C"),new Card(4,"S"), new Card(5,"D"), new Card(5,"H"), 
+   23			new Card(5,"C"),new Card(5,"S"), new Card(6,"D"), new Card(6,"H"), 
+   24			new Card(6,"C"),new Card(6,"S"), new Card(7,"D"), new Card(7,"H"), 
+   25			new Card(7,"C"),new Card(7,"S"), new Card(8,"D"), new Card(8,"H"), 
+   26			new Card(8,"C"),new Card(8,"S"), new Card(9,"D"), new Card(9,"H"), 
+   27			new Card(9,"C"),new Card(9,"S"), new Card(10,"D"), new Card(10,"H"), 
+   28			new Card(10,"C"),new Card(10,"S"), new Card(11,"D"), new Card(11,"H"), 
+   29			new Card(11,"C"),new Card(11,"S"), new Card(12,"D"), new Card(12,"H"), 
+   30			new Card(12,"C"),new Card(12,"S"), new Card(13,"D"), new Card(13,"H"), 
+   31			new Card(13,"C"),new Card(13,"S"), new Card(14,"D"), new Card(14,"H"), 
+   32			new Card(14,"C"),new Card(14,"S")));
+   33			cardsLeft=52;
+   34			discardPile=new ArrayList<Card>();
+   35		}
+   36		
+   37		/**
+   38			Adds all of the cards in the hand to the discard pile.
+   39			@param hand the hand to be discarded
+   40		*/
+   41		
+   42		public void addToDiscardPile(Hand hand){
+   43			for(Card c:hand)
+   44				discardPile.add(c);
+   45		}
+   46		
+   47		/**
+   48			Returns activeDeck.
+   49		*/
+   50		public ArrayList<Card> getActiveDeck(){
+   51			return activeDeck;
+   52		}
+   53		
+   54		/**
+   55			Returns a Hand of 5 random Cards.
+   56		*/
+
+
+
+
+
+
+
+2012-05-29 18:48                  src/Deck.java                   Page 2
+
+
+   57		public Hand dealCards(){
+   58			Hand hand=new Hand();
+   59			for(int i=0;i<5;i++)
+   60			{
+   61				int randomNum=(int)(Math.random()*(cardsLeft));
+   62				Card drawnCard=this.getActiveDeck().get(randomNum);
+   63				activeDeck.remove(drawnCard);
+   64				hand.add(drawnCard);
+   65				cardsLeft--;
+   66			}
+   67			return hand;
+   68		}
+   69		
+   70		/**
+   71			Adds all of the Cards in discardPile to activeDeck. 
+   72		*/
+   73		public void reShuffle(){
+   74			for(Card c:discardPile)
+   75				activeDeck.add(c);
+   76		}
+   77		
+   78		
+   79		
+   80	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 1
+
+
+    1	import java.util.*;
+    2	
+    3	/**
+    4		Class that represents a hand of 5 Cards.
+    5	*/
+    6	public class Hand extends ArrayList<Card>{
+    7	
+    8	/**
+    9		No arg constructor for Hand
+   10	*/
+   11		public Hand(){
+   12			super(1);
+   13		}
+   14	
+   15	/**
+   16		Constructor that sets a hand given 5 Cards as arguments.
+   17		@param a Card a
+   18		@param b Card b
+   19		@param c Card c
+   20		@param d Card d
+   21		@param e Card e
+   22	*/	
+   23		public Hand(Card a, Card b, Card c, Card d, Card e){
+   24			super(5);
+   25			this.add(a); this.add(b); this.add(c); this.add(d); this.add(e);
+   26		}
+   27	
+   28	/**
+   29		Constructor that sets a 5 Card hand based on the deck passed in.
+   30		@param deck deck of Cards
+   31	*/
+   32		public Hand(Deck deck){
+   33			super(5);
+   34			for(Card c:deck.dealCards())
+   35				this.add(c);
+   36		}
+   37	
+   38	/**
+   39		Discards the hand into the discardPile of the deck.
+   40		@param deck deck of Cards
+   41	*/	
+   42		public void discardHand(Deck deck){
+   43			deck.addToDiscardPile(this);
+   44		}
+   45		
+   46	/**
+   47		Adds 5 Cards from the deck to the Hand.
+   48		@param deck deck of Cards
+   49	*/	
+   50		public void draw(Deck deck){
+   51			for(Card c:deck.dealCards())
+   52				this.add(c);
+   53		}
+   54	
+   55	/**
+   56		Returns the Card with the highest value.
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 2
+
+
+   57	*/
+   58		public Card getHighCard(){
+   59			Card max=this.get(0);
+   60			for(Card c:this){
+   61				if(c.getValue()>max.getValue())
+   62					max=c;
+   63			}
+   64			return max; 
+   65		}
+   66	
+   67	/**
+   68		Returns the int value of the highest Card.
+   69	*/
+   70		public int getHighCardValue(){
+   71			int max=0;
+   72			for(Card c:this)
+   73			{
+   74				if(c.getValue()>max)
+   75					max=c.getValue();
+   76			}
+   77			return max;
+   78		}
+   79	
+   80	/**
+   81		Returns an ArrayList of Card int values in a numerical order.
+   82	*/
+   83		public ArrayList<Integer> sortHand(){
+   84			ArrayList<Integer> sortedHand=new ArrayList<Integer>();
+   85			for(int i=0;i<5;i++)
+   86			{
+   87				sortedHand.add(this.get(i).getValue());
+   88			}
+   89			Collections.sort(sortedHand);
+   90			return sortedHand;
+   91		}
+   92		
+   93	/**
+   94		Returns boolean for if the hand is a straight flush
+   95	*/	
+   96		public boolean isStraightFlush(){
+   97			int straightFlushCounter=0;
+   98			if(this.isStraight())
+   99			{
+  100				for(int i=0;i<4;i++)
+  101				{
+  102					if(this.get(i).getSuit()==this.get(i+1).getSuit())
+  103						straightFlushCounter++;
+  104				}
+  105				if(straightFlushCounter==4)
+  106					return true;
+  107				else
+  108					return false;
+  109			}
+  110			else
+  111				return false;
+  112		}
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 3
+
+
+  113	
+  114	/**
+  115		Returns boolean for if the hand has a four of a kind.
+  116	*/		
+  117		public boolean isFourOfAKind(){
+  118			ArrayList<Integer> sortedHand=this.sortHand();
+  119			int quadCounter=0;
+  120			for(int i=0;i<4;i++)
+  121			{
+  122				if(sortedHand.get(i)==sortedHand.get(i+1))
+  123				{
+  124					quadCounter++;
+  125				}
+  126			}
+  127			if(quadCounter==3)
+  128				return true;
+  129			else
+  130				return false;
+  131		}
+  132	
+  133	/**
+  134		Returns boolean for if the hand is a full house.
+  135	*/			
+  136		public boolean isFullHouse(){
+  137			ArrayList<Integer> sortedHand=this.sortHand();
+  138			int doubleCounter=0;
+  139			int tripleCounter=0;
+  140			for(int i=0;i<4;i++)
+  141			{
+  142				if(sortedHand.get(i)==sortedHand.get(i+1))
+  143				{
+  144					if(tripleCounter==1)
+  145					{
+  146						sortedHand.remove(i+1);
+  147						sortedHand.remove(i);
+  148						tripleCounter++;
+  149						break;
+  150					}
+  151					else
+  152					{
+  153						if(i==1)
+  154							tripleCounter=0;
+  155						else
+  156							tripleCounter++;
+  157					}
+  158						
+  159				}
+  160				else
+  161					tripleCounter=0;
+  162					
+  163				
+  164			}
+  165			if(tripleCounter==2)
+  166			{
+  167				sortedHand.trimToSize();
+  168				int size=sortedHand.size();
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 4
+
+
+  169				for(int i=0;i<(size-1);i++)
+  170				{
+  171					if(sortedHand.get(i)==sortedHand.get(i+1))
+  172					{
+  173						doubleCounter++;
+  174					}
+  175				}
+  176			}
+  177			else
+  178				return false;
+  179			if(doubleCounter==1)
+  180				return true;
+  181			else
+  182				return false;
+  183		}
+  184	
+  185	/**
+  186		Returns boolean for if the hand is a flush.
+  187	*/		
+  188		public boolean isFlush(){
+  189			if(this.isStraightFlush())
+  190				return false;
+  191			int flushCounter=0;
+  192			for(int i=0;i<4;i++)
+  193			{
+  194				if(this.get(i).getSuit()==this.get(i+1).getSuit())
+  195				{
+  196					flushCounter++;
+  197				}
+  198			}
+  199			if(flushCounter==4)
+  200				return true;
+  201			else
+  202				return false;
+  203		}
+  204	
+  205	/**
+  206		Returns boolean for if the hand is a straight.
+  207	*/		
+  208		public boolean isStraight(){
+  209			ArrayList<Integer> sortedHand=this.sortHand();
+  210			int straightCounter=0;
+  211			for(int i=0;i<4;i++)
+  212			{
+  213				if(sortedHand.get(i)==(sortedHand.get(i+1)-1))
+  214				{
+  215					straightCounter++;
+  216				}
+  217			}
+  218			return(straightCounter==4);
+  219		}
+  220	
+  221	/**
+  222		Returns boolean for if the hand has three of a kind.
+  223	*/			
+  224		public boolean isThreeOfAKind(){
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 5
+
+
+  225			if(this.isFullHouse()){
+  226				return false;
+  227			}
+  228			
+  229			ArrayList<Integer> sortedHand=this.sortHand();
+  230			int tripleCounter=0;
+  231			for(int i=0;i<4;i++)
+  232			{
+  233				if(sortedHand.get(i)==sortedHand.get(i+1))
+  234					tripleCounter++;
+  235				else
+  236				{
+  237					if(tripleCounter==1)
+  238						tripleCounter=0;
+  239				}
+  240			}
+  241			if(tripleCounter==2)
+  242				return true;
+  243			else
+  244				return false;
+  245			
+  246		}
+  247		
+  248	/**
+  249		Returns boolean for if the hand has two pairs.
+  250	*/		
+  251		public boolean isTwoPair(){
+  252			ArrayList<Integer> sortedHand=new ArrayList<Integer>();
+  253			sortedHand=this.sortHand();
+  254			int pair1Counter=0;
+  255			int pair2Counter=0;
+  256			for(int i=0;i<4;i++)
+  257			{
+  258				if(sortedHand.get(i)==sortedHand.get(i+1))
+  259				{
+  260					if(pair1Counter==1)
+  261						pair2Counter++;
+  262					else
+  263						pair1Counter++;
+  264				}
+  265			}
+  266			return(pair1Counter==1 && pair2Counter==1);
+  267		}
+  268	
+  269	/**
+  270		Returns boolean for if the hand has only one pair.
+  271	*/			
+  272		public boolean isOnePair(){
+  273			ArrayList<Integer> sortedHand=new ArrayList<Integer>();
+  274			sortedHand=this.sortHand();
+  275			int pairCounter=0;
+  276			for(int i=0;i<4;i++)
+  277			{
+  278				if(sortedHand.get(i)==sortedHand.get(i+1))
+  279					pairCounter++;
+  280			}
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 6
+
+
+  281			if(pairCounter==1)
+  282				return true;
+  283			else
+  284				return false;
+  285		}
+  286		
+  287	/**
+  288		Returns 1 if "this" hand is better than "otherHand" or returns 0
+  289		if the opposite.
+  290		@param otherHand hand to be compared
+  291	*/
+  292		public int compareHands(Hand otherHand){
+  293			int player1Value=0;
+  294			int player2Value=0;
+  295			
+  296			if(this.isStraightFlush())
+  297				player1Value=8;
+  298			else if(this.isFourOfAKind())
+  299				player1Value=7;
+  300			else if(this.isFullHouse())
+  301				player1Value=6;
+  302			else if(this.isFlush())
+  303				player1Value=5;
+  304			else if(this.isStraight())
+  305				player1Value=4;
+  306			else if(this.isThreeOfAKind())
+  307				player1Value=3;
+  308			else if(this.isTwoPair())
+  309				player1Value=2;
+  310			else if(this.isOnePair())	
+  311				player1Value=1;
+  312			else
+  313				player1Value=0;
+  314			
+  315			if(otherHand.isStraightFlush())
+  316				player2Value=8;
+  317			else if(otherHand.isFourOfAKind())
+  318				player2Value=7;
+  319			else if(otherHand.isFullHouse())
+  320				player2Value=6;
+  321			else if(otherHand.isFlush())
+  322				player2Value=5;
+  323			else if(otherHand.isStraight())
+  324				player2Value=4;
+  325			else if(otherHand.isThreeOfAKind())
+  326				player2Value=3;
+  327			else if(otherHand.isTwoPair())
+  328				player2Value=2;
+  329			else if(otherHand.isOnePair())	
+  330				player2Value=1;
+  331			else
+  332				player2Value=0;
+  333			
+  334			if(player1Value>player2Value)
+  335				return 1;
+  336			else if(player2Value>player1Value)
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 7
+
+
+  337				return 0;
+  338			else
+  339				return this.sameHand(otherHand);
+  340	}
+  341	
+  342	/**
+  343		This method is used if both hands are of the same type(two pairs,
+  344		full house, etc.) Returns 1 if "this" hand is better or 0 if otherwise.
+  345		@param otherHand hand to be compared
+  346	*/	
+  347	public int sameHand(Hand otherHand){
+  348			ArrayList<Integer> sortedHand=new ArrayList<Integer>();
+  349			sortedHand=this.sortHand();
+  350			ArrayList<Integer> otherSortedHand=new ArrayList<Integer>();
+  351			otherSortedHand=otherHand.sortHand();
+  352			
+  353			int handValue=0;
+  354			int otherHandValue=0;
+  355			int handPairIndex=0;
+  356			int otherHandPairIndex=0;
+  357			
+  358			if(isOnePair())
+  359			{
+  360				
+  361				for(int i=0;i<4;i++)
+  362				{
+  363					if(sortedHand.get(i)==sortedHand.get(i+1)){
+  364						handValue=sortedHand.get(i);
+  365						handPairIndex=i;
+  366						}
+  367					if(otherSortedHand.get(i)==otherSortedHand.get(i+1)){
+  368						otherHandValue=otherSortedHand.get(i);
+  369						otherHandPairIndex=i; 
+  370						}
+  371				}
+  372				
+  373				if(handValue>otherHandValue)
+  374					return 1;
+  375				else if(handValue<otherHandValue)
+  376					return 0;
+  377				else{
+  378					sortedHand.remove(handPairIndex+1);
+  379					sortedHand.remove(handPairIndex);
+  380					otherSortedHand.remove(otherHandPairIndex+1);
+  381					otherSortedHand.remove(otherHandPairIndex);
+  382					int winner = (sortedHand.get(2) > otherSortedHand.get(2)) ? 1 : 0;
+  383					return winner;
+  384				}
+  385		
+  386			}
+  387			
+  388			else if(isTwoPair())
+  389			{
+  390				Integer handCard=0; Integer otherHandCard=0;
+  391				for(int i=0;i<4;i++)
+  392				{
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 8
+
+
+  393					if(sortedHand.get(i)==sortedHand.get(i+1))
+  394						{
+  395							if(sortedHand.get(i)>handValue){
+  396								handValue=sortedHand.get(i);
+  397								handCard=handValue;
+  398							}
+  399						}
+  400					remove(handCard);
+  401					if(otherSortedHand.get(i)==otherSortedHand.get(i+1))
+  402						{
+  403							if(otherSortedHand.get(i)>otherHandValue){
+  404								otherHandValue=otherSortedHand.get(i);
+  405								otherHandCard=otherHandValue;
+  406							}
+  407						}
+  408					remove(otherHandCard);
+  409				}
+  410				if(handValue>otherHandValue)
+  411					return 1;
+  412				else if(handValue<otherHandValue) 
+  413					return 0;
+  414				else 
+  415					return sameHand(otherHand);
+  416					
+  417			}
+  418			
+  419			else if(isStraight())
+  420			{
+  421				if(this.getHighCardValue()>otherHand.getHighCardValue())
+  422					return 1;
+  423				else
+  424					return 0;
+  425			}
+  426			else if(isStraightFlush())
+  427			{
+  428				if(this.getHighCardValue()>otherHand.getHighCardValue())
+  429					return 1;
+  430				else
+  431					return 0;
+  432			}
+  433			else if(isFullHouse())
+  434			{
+  435				for(int i=0;i<3;i++)
+  436				{
+  437					if(sortedHand.get(i)==sortedHand.get(i+1) && sortedHand.get(i)==sortedHand.get(i+2))
+  438						{
+  439							if(sortedHand.get(i)>handValue)
+  440								handValue=sortedHand.get(i);
+  441						}	
+  442					if(otherSortedHand.get(i)==otherSortedHand.get(i+1) && otherSortedHand.get(i)==otherSortedHand.get(i+2))
+  443						{
+  444							if(otherSortedHand.get(i)>otherHandValue)
+  445								otherHandValue=otherSortedHand.get(i);	
+  446						}
+  447				}
+  448				if(handValue>otherHandValue)
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                   Page 9
+
+
+  449					return 1;
+  450				else
+  451					return 0;
+  452			}
+  453			else if(isThreeOfAKind())
+  454			{
+  455				for(int i=0;i<3;i++)
+  456				{
+  457					if(sortedHand.get(i)==sortedHand.get(i+1) && sortedHand.get(i)==sortedHand.get(i+2))
+  458						{
+  459							if(sortedHand.get(i)>handValue)
+  460								handValue=sortedHand.get(i);
+  461						}	
+  462					if(otherSortedHand.get(i)==otherSortedHand.get(i+1) && otherSortedHand.get(i)==otherSortedHand.get(i+2))
+  463						{
+  464							if(otherSortedHand.get(i)>otherHandValue)
+  465								otherHandValue=otherSortedHand.get(i);	
+  466						}
+  467				}
+  468				if(handValue>otherHandValue)
+  469					return 1;
+  470				else
+  471					return 0;
+  472			}
+  473			else if(isFourOfAKind())
+  474			{
+  475				for(int i=0;i<2;i++)
+  476				{
+  477					if(sortedHand.get(i)==sortedHand.get(i+1) && sortedHand.get(i)==sortedHand.get(i+3))
+  478						{
+  479							if(sortedHand.get(i)>handValue)
+  480								handValue=sortedHand.get(i);
+  481						}	
+  482					if(otherSortedHand.get(i)==otherSortedHand.get(i+1) && otherSortedHand.get(i)==otherSortedHand.get(i+3))
+  483						{
+  484							if(otherSortedHand.get(i)>otherHandValue)
+  485								otherHandValue=otherSortedHand.get(i);	
+  486						}
+  487				}
+  488				if(handValue>otherHandValue)
+  489					return 1;
+  490				else
+  491					return 0;
+  492			}
+  493			else
+  494			{
+  495				return sameHandMethod(otherHand);
+  496			}
+  497		}
+  498	
+  499	/**
+  500		Method used to determine which hand has the higher high card. If high
+  501		cards are the same, continuously checks for next high card until a 
+  502		higher card is found.
+  503		@param otherHand hand to be compared
+  504	*/
+
+
+
+
+
+
+
+2012-05-29 21:04                  src/Hand.java                  Page 10
+
+
+  505		public int sameHandMethod(Hand otherHand){
+  506		
+  507			if(this.isEmpty())
+  508				return 0;
+  509			else if(this.getHighCardValue()>otherHand.getHighCardValue())
+  510				return 1;
+  511			else if(this.getHighCardValue()<otherHand.getHighCardValue())//made changes
+  512				return 0;
+  513			else{
+  514				this.remove(this.getHighCard()); 
+  515				otherHand.remove(otherHand.getHighCard());
+  516				return sameHandMethod(otherHand);
+  517			}
+  518	}
+  519	
+  520	
+  521	}
+  522		
+  523		
+  524		
+  525	
+  526	
+  527	
+  528	
+  529	
+  530	
+  531	
+  532	
+  533	
+  534	
+  535	
+  536	
+  537	
+  538	
+  539	
+  540	
+  541	
+  542	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 1
+
+
+    1	import static org.junit.Assert.assertEquals;
+    2	
+    3	import org.junit.Test;
+    4	/**
+    5	 * The test class HandTest, to test the Hand class
+    6	 *
+    7	 * @author Joey Dewan
+    8	 * @version CS56, Spring 2012, 
+    9	 * @see Hand
+   10	 */
+   11	 
+   12	 public class HandTest
+   13	 {
+   14	 	
+   15	 	/**
+   16	 		test method getHighCardValue from Hand class
+   17	 	*/
+   18	 
+   19		@Test public void testGetHighCard()
+   20		{
+   21			Card card1=new Card(2,"S");
+   22			Card card2=new Card(3,"H");
+   23			Card card3=new Card(4,"S");
+   24			Card card4=new Card(5,"S");
+   25			Card card5=new Card(6,"S");
+   26			Hand hand=new Hand(card1,card2,card3,card4,card5);
+   27			assertEquals(hand.getHighCardValue(),6);
+   28		}
+   29		
+   30		/**
+   31			test method isStraight() from Hand class
+   32		*/
+   33		
+   34		@Test public void testIsStraight()
+   35		{
+   36			Card card1=new Card(2,"S");
+   37			Card card2=new Card(3,"H");
+   38			Card card3=new Card(4,"S");
+   39			Card card4=new Card(5,"S");
+   40			Card card5=new Card(6,"S");
+   41			Hand hand=new Hand(card1,card2,card3,card4,card5);
+   42			assertEquals(hand.isStraight(),true);
+   43		}
+   44		
+   45		/**
+   46			test method isStraightFlush() in Hand class
+   47		*/
+   48		
+   49		@Test public void testIsStraightFlush()
+   50		{
+   51			Card card1=new Card(2,"S");
+   52			Card card2=new Card(3,"S");
+   53			Card card3=new Card(4,"S");
+   54			Card card4=new Card(5,"S");
+   55			Card card5=new Card(6,"S");
+   56			Hand hand=new Hand(card1,card2,card3,card4,card5);
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 2
+
+
+   57			assertEquals(hand.isStraightFlush(),true);
+   58		}
+   59		
+   60		/**
+   61			test method isFourOfAKind() in Hand class
+   62		*/
+   63		
+   64		@Test public void testIsFourOfAKind()
+   65		{
+   66			Card card1=new Card(2,"S");
+   67			Card card2=new Card(2,"H");
+   68			Card card3=new Card(4,"S");
+   69			Card card4=new Card(2,"D");
+   70			Card card5=new Card(2,"C");
+   71			Hand hand=new Hand(card1,card2,card3,card4,card5);
+   72			assertEquals(hand.isFourOfAKind(),true);
+   73			assertEquals(hand.isThreeOfAKind(),false);
+   74			assertEquals(hand.isTwoPair(),false);
+   75		}
+   76		
+   77		/**
+   78			test method isFullHouse() in Hand class
+   79		*/
+   80		
+   81		@Test public void testIsFullHouse()
+   82		{
+   83			Card card1=new Card(2,"S");
+   84			Card card2=new Card(4,"H");
+   85			Card card3=new Card(4,"S");
+   86			Card card4=new Card(2,"D");
+   87			Card card5=new Card(2,"C");
+   88			Hand hand=new Hand(card1,card2,card3,card4,card5);
+   89			assertEquals(hand.isFullHouse(),true);
+   90		}
+   91		
+   92		/**
+   93			test method isFlush() in Hand class
+   94		*/
+   95		
+   96		@Test public void testIsFlush()
+   97		{
+   98			Card card1=new Card(7,"S");
+   99			Card card2=new Card(3,"S");
+  100			Card card3=new Card(4,"S");
+  101			Card card4=new Card(11,"S");
+  102			Card card5=new Card(5,"S");
+  103			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  104			assertEquals(hand.isFlush(),true);
+  105			assertEquals(hand.isStraightFlush(),false);
+  106		}
+  107		
+  108		/**
+  109			test method isThreeOfAKind() in Hand class
+  110		*/
+  111		
+  112		@Test public void testIsThreeOfAKind()
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 3
+
+
+  113		{
+  114			Card card1=new Card(3,"D");
+  115			Card card2=new Card(3,"H");
+  116			Card card3=new Card(4,"C");
+  117			Card card4=new Card(3,"S");
+  118			Card card5=new Card(5,"S");
+  119			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  120			assertEquals(hand.isThreeOfAKind(),true);
+  121		}
+  122		
+  123		/**
+  124			test method isTwoPair() in Hand class
+  125		*/
+  126		
+  127		@Test public void testIsTwoPair()
+  128		{
+  129			Card card1=new Card(3,"D");
+  130			Card card2=new Card(3,"H");
+  131			Card card3=new Card(4,"C");
+  132			Card card4=new Card(6,"S");
+  133			Card card5=new Card(4,"S");
+  134			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  135			assertEquals(hand.isTwoPair(),true);
+  136			assertEquals(hand.isOnePair(),false);
+  137		}
+  138		
+  139		/**
+  140			test method isOnePair() in Hand class
+  141		*/
+  142		
+  143		@Test public void testIsOnePair()
+  144		{
+  145			Card card1=new Card(3,"D");
+  146			Card card2=new Card(11,"H");
+  147			Card card3=new Card(4,"C");
+  148			Card card4=new Card(3,"S");
+  149			Card card5=new Card(5,"S");
+  150			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  151			assertEquals(hand.isOnePair(),true);
+  152		}
+  153		
+  154		/**
+  155			test method sameHand() for one pair in Hand class
+  156		*/
+  157		
+  158		@Test public void testSameHandOnePair1()
+  159		{
+  160			Card card1=new Card(10,"D");
+  161			Card card2=new Card(11,"H");
+  162			Card card3=new Card(4,"C");
+  163			Card card4=new Card(10,"S");
+  164			Card card5=new Card(6,"S");
+  165			
+  166			Card card11=new Card(3,"D");
+  167			Card card22=new Card(12,"H");
+  168			Card card33=new Card(4,"C");
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 4
+
+
+  169			Card card44=new Card(3,"S");
+  170			Card card55=new Card(5,"S");
+  171			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  172			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  173			assertEquals(hand.sameHand(otherHand),1);
+  174		}
+  175		
+  176		/**
+  177			test method sameHand() for one pair in Hand class
+  178		*/
+  179		
+  180		@Test public void testSameHandOnePair2()
+  181		{
+  182			Card card1=new Card(9,"D");
+  183			Card card2=new Card(11,"H");
+  184			Card card3=new Card(4,"C");
+  185			Card card4=new Card(9,"S");
+  186			Card card5=new Card(6,"S");
+  187			
+  188			Card card11=new Card(9,"D");
+  189			Card card22=new Card(12,"H");
+  190			Card card33=new Card(4,"C");
+  191			Card card44=new Card(9,"S");
+  192			Card card55=new Card(5,"S");
+  193			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  194			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  195			assertEquals(hand.sameHand(otherHand),0);
+  196		}
+  197		
+  198		/**
+  199			test method sameHand() for two pair in Hand class
+  200		*/
+  201		
+  202		@Test public void testSameHandTwoPair1()
+  203		{
+  204			Card card1=new Card(10,"D");
+  205			Card card2=new Card(11,"H");
+  206			Card card3=new Card(11,"C");
+  207			Card card4=new Card(10,"S");
+  208			Card card5=new Card(6,"S");
+  209			
+  210			Card card11=new Card(10,"D");
+  211			Card card22=new Card(12,"H");
+  212			Card card33=new Card(10,"C");
+  213			Card card44=new Card(3,"S");
+  214			Card card55=new Card(3,"H");
+  215			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  216			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  217			assertEquals(hand.sameHand(otherHand),1);
+  218		}
+  219		
+  220		/**
+  221			test method sameHand() for two pair in Hand class
+  222		*/
+  223		
+  224		@Test public void testSameHandTwoPair2()
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 5
+
+
+  225		{
+  226			Card card1=new Card(10,"D");
+  227			Card card2=new Card(11,"H");
+  228			Card card3=new Card(11,"C");
+  229			Card card4=new Card(10,"S");
+  230			Card card5=new Card(6,"S");
+  231			
+  232			Card card11=new Card(14,"D");
+  233			Card card22=new Card(12,"H");
+  234			Card card33=new Card(14,"C");
+  235			Card card44=new Card(3,"S");
+  236			Card card55=new Card(3,"H");
+  237			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  238			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  239			assertEquals(hand.sameHand(otherHand),0);
+  240		}
+  241			
+  242		/**
+  243			test method sameHand() for straight in Hand class
+  244		*/
+  245		
+  246		@Test public void testSameHandStraight1()
+  247		{
+  248			Card card1=new Card(2,"D");
+  249			Card card2=new Card(3,"H");
+  250			Card card3=new Card(4,"C");
+  251			Card card4=new Card(5,"S");
+  252			Card card5=new Card(6,"S");
+  253			
+  254			Card card11=new Card(5,"D");
+  255			Card card22=new Card(6,"H");
+  256			Card card33=new Card(7,"C");
+  257			Card card44=new Card(8,"S");
+  258			Card card55=new Card(9,"H");
+  259			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  260			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  261			assertEquals(hand.sameHand(otherHand),0);
+  262		}
+  263		
+  264		/**
+  265			test method sameHand() for straight in Hand class
+  266		*/
+  267		
+  268		@Test public void testSameHandStraight2()
+  269		{
+  270			Card card1=new Card(10,"D");
+  271			Card card2=new Card(11,"H");
+  272			Card card3=new Card(12,"C");
+  273			Card card4=new Card(13,"S");
+  274			Card card5=new Card(14,"S");
+  275			
+  276			Card card11=new Card(5,"D");
+  277			Card card22=new Card(6,"H");
+  278			Card card33=new Card(7,"C");
+  279			Card card44=new Card(8,"S");
+  280			Card card55=new Card(9,"H");
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 6
+
+
+  281			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  282			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  283			assertEquals(hand.sameHand(otherHand),1);
+  284		}
+  285		
+  286		/**
+  287			test method sameHand() for full house in Hand class
+  288		*/
+  289		
+  290		@Test public void testSameHandFulHouse1()
+  291		{
+  292			Card card1=new Card(10,"D");
+  293			Card card2=new Card(10,"H");
+  294			Card card3=new Card(10,"C");
+  295			Card card4=new Card(13,"S");
+  296			Card card5=new Card(13,"C");
+  297			
+  298			Card card11=new Card(5,"D");
+  299			Card card22=new Card(5,"H");
+  300			Card card33=new Card(5,"C");
+  301			Card card44=new Card(8,"S");
+  302			Card card55=new Card(8,"H");
+  303			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  304			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  305			assertEquals(hand.sameHand(otherHand),1);
+  306		}
+  307	
+  308		/**
+  309			test method sameHand() for full house in Hand class
+  310		*/
+  311		
+  312		@Test public void testSameHandFullHouse2()
+  313		{
+  314			Card card1=new Card(10,"D");
+  315			Card card2=new Card(10,"H");
+  316			Card card3=new Card(10,"C");
+  317			Card card4=new Card(13,"S");
+  318			Card card5=new Card(13,"C");
+  319			
+  320			Card card11=new Card(14,"D");
+  321			Card card22=new Card(14,"H");
+  322			Card card33=new Card(14,"C");
+  323			Card card44=new Card(8,"S");
+  324			Card card55=new Card(8,"H");
+  325			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  326			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  327			assertEquals(hand.sameHand(otherHand),0);
+  328		}
+  329		
+  330		/**
+  331			test method sameHand() for three of a kind in Hand class
+  332		*/
+  333		
+  334		@Test public void testSameHandThreeOfAKind1()
+  335		{
+  336			Card card1=new Card(10,"D");
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 7
+
+
+  337			Card card2=new Card(10,"H");
+  338			Card card3=new Card(10,"C");
+  339			Card card4=new Card(11,"S");
+  340			Card card5=new Card(13,"C");
+  341			
+  342			Card card11=new Card(14,"D");
+  343			Card card22=new Card(14,"H");
+  344			Card card33=new Card(14,"C");
+  345			Card card44=new Card(9,"S");
+  346			Card card55=new Card(8,"H");
+  347			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  348			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  349			assertEquals(hand.sameHand(otherHand),0);
+  350		}
+  351		
+  352		/**
+  353			test method sameHand() for three of a kind in Hand class
+  354		*/
+  355		
+  356		@Test public void testSameHandThreeOfAKind2()
+  357		{
+  358			Card card1=new Card(10,"D");
+  359			Card card2=new Card(10,"H");
+  360			Card card3=new Card(10,"C");
+  361			Card card4=new Card(11,"S");
+  362			Card card5=new Card(13,"C");
+  363			
+  364			Card card11=new Card(9,"D");
+  365			Card card22=new Card(9,"H");
+  366			Card card33=new Card(9,"C");
+  367			Card card44=new Card(5,"S");
+  368			Card card55=new Card(8,"H");
+  369			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  370			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  371			assertEquals(hand.sameHand(otherHand),1);
+  372		}
+  373		
+  374		/**
+  375			test method sameHand() for four of a kind in Hand class
+  376		*/
+  377		
+  378		@Test public void testSameHandFourOfAKind1()
+  379		{
+  380			Card card1=new Card(10,"D");
+  381			Card card2=new Card(10,"H");
+  382			Card card3=new Card(10,"C");
+  383			Card card4=new Card(10,"S");
+  384			Card card5=new Card(13,"C");
+  385			
+  386			Card card11=new Card(9,"D");
+  387			Card card22=new Card(9,"H");
+  388			Card card33=new Card(9,"C");
+  389			Card card44=new Card(9,"S");
+  390			Card card55=new Card(8,"H");
+  391			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  392			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 8
+
+
+  393			assertEquals(hand.sameHand(otherHand),1);
+  394		}
+  395		
+  396		/**
+  397			test method sameHand() for four of a kind in Hand class
+  398		*/
+  399		
+  400		@Test public void testSameHandFourOfAKind2()
+  401		{
+  402			Card card1=new Card(10,"D");
+  403			Card card2=new Card(10,"H");
+  404			Card card3=new Card(10,"C");
+  405			Card card4=new Card(10,"S");
+  406			Card card5=new Card(13,"C");
+  407			
+  408			Card card11=new Card(14,"D");
+  409			Card card22=new Card(14,"H");
+  410			Card card33=new Card(14,"C");
+  411			Card card44=new Card(14,"S");
+  412			Card card55=new Card(8,"H");
+  413			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  414			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  415			assertEquals(hand.sameHand(otherHand),0);
+  416		}
+  417	
+  418		/**
+  419			test method sameHand() for straight flush in Hand class
+  420		*/
+  421		
+  422		@Test public void testSameHandStraightFlush1()
+  423		{
+  424			Card card1=new Card(2,"D");
+  425			Card card2=new Card(3,"D");
+  426			Card card3=new Card(4,"D");
+  427			Card card4=new Card(5,"D");
+  428			Card card5=new Card(6,"D");
+  429			
+  430			Card card11=new Card(5,"H");
+  431			Card card22=new Card(6,"H");
+  432			Card card33=new Card(7,"H");
+  433			Card card44=new Card(8,"H");
+  434			Card card55=new Card(9,"H");
+  435			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  436			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  437			assertEquals(hand.sameHand(otherHand),0);
+  438		}
+  439		
+  440		/**
+  441			test method sameHand() for straight flush in Hand class
+  442		*/
+  443		
+  444		@Test public void testSameHandStraightFlush2()
+  445		{
+  446			Card card1=new Card(6,"D");
+  447			Card card2=new Card(7,"D");
+  448			Card card3=new Card(8,"D");
+
+
+
+
+
+
+
+2012-05-29 18:26                src/HandTest.java                 Page 9
+
+
+  449			Card card4=new Card(9,"D");
+  450			Card card5=new Card(10,"D");
+  451			
+  452			Card card11=new Card(5,"H");
+  453			Card card22=new Card(6,"H");
+  454			Card card33=new Card(7,"H");
+  455			Card card44=new Card(8,"H");
+  456			Card card55=new Card(9,"H");
+  457			Hand hand=new Hand(card1,card2,card3,card4,card5);
+  458			Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+  459			assertEquals(hand.sameHand(otherHand),1);
+  460		}
+  461	
+  462	
+  463	}
+  464	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2012-05-29 22:16                src/PokerGame.java                Page 1
+
+
+    1	import java.awt.BorderLayout;
+    2	import java.awt.Color;
+    3	import java.awt.event.ActionEvent;
+    4	import java.awt.event.ActionListener;
+    5	import java.net.URL;
+    6	
+    7	import javax.swing.ImageIcon;
+    8	import javax.swing.JButton;
+    9	import javax.swing.JFrame;
+   10	import javax.swing.JLabel;
+   11	import javax.swing.JPanel;
+   12	
+   13	/**
+   14		Class that represents a Poker 5 card draw game.
+   15	*/
+   16	
+   17	public class PokerGame {
+   18	
+   19		private JPanel panel;
+   20		private JFrame mainFrame,mainFrame2;
+   21		private JFrame playButtonFrame;
+   22		private JButton playButton, playAgainButton;
+   23		private JLabel winnerLabel;
+   24		private JPanel dealerPanel, playerPanel, centerPanel;
+   25		private Hand dealerHand, playerHand;
+   26		private Deck deck;
+   27		
+   28	/**
+   29		No arg constructor that initializes a new deck.
+   30	*/
+   31		public PokerGame(){
+   32			deck=new Deck();
+   33		}
+   34		
+   35	/**
+   36		Main method of PokerGame class.
+   37	*/
+   38		public static void main(String[] args)
+   39		{
+   40			PokerGame gui=new PokerGame();
+   41			gui.go();
+   42		}
+   43		
+   44	/**
+   45		Creates a window with a Play button.
+   46	*/
+   47		public void go(){
+   48			
+   49			playButtonFrame = new JFrame();
+   50			playButtonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   51			
+   52		
+   53			
+   54			panel=new JPanel();
+   55			
+   56			playButton=new JButton("Click to Play");
+
+
+
+
+
+
+
+2012-05-29 22:16                src/PokerGame.java                Page 2
+
+
+   57			playButton.addActionListener(new playButtonListener());
+   58			panel.add(playButton,BorderLayout.CENTER);
+   59			panel.setBackground(Color.darkGray);
+   60			
+   61			playButtonFrame.add(BorderLayout.CENTER, panel);
+   62			playButtonFrame.setSize(200,200);
+   63			
+   64			playButtonFrame.setVisible(true);
+   65		}
+   66		
+   67	/**
+   68		Sets up the player's and dealer's hand.
+   69	*/	
+   70		public void playerSetUp(){
+   71			playerHand=new Hand(deck);
+   72			dealerHand=new Hand(deck);
+   73		}
+   74		
+   75	/**
+   76		Returns an ImageIcon by using the URL class in order to make the 
+   77		ImageIcon web compatible.
+   78		@param c card whose image is to be retrieved.
+   79	*/
+   80		public ImageIcon getCardImage(Card c){
+   81			String dir="Cards/";
+   82			String cardFile=c.toString()+".png";
+   83			URL url=getClass().getResource(dir+cardFile);
+   84			return new ImageIcon(url);
+   85		}
+   86		
+   87	/**
+   88		Method that sets up a new Poker game with new hands.
+   89	*/
+   90		public void replay(){
+   91			playerSetUp();
+   92	  		
+   93	  		dealerPanel=new JPanel();
+   94	  		playerPanel=new JPanel();
+   95	  		centerPanel=new JPanel();
+   96	  		playAgainButton=new JButton("Play Again");
+   97	  		playAgainButton.addActionListener(new playAgainListener());
+   98	  		for(int i=0;i<5;i++){
+   99	  			dealerPanel.add(new JLabel(getCardImage(dealerHand.get(i))));
+  100	  			playerPanel.add(new JLabel(getCardImage(playerHand.get(i))));
+  101	  		}
+  102	  			
+  103	  		dealerPanel.add(new JLabel("DEALER"));
+  104	  		playerPanel.add(new JLabel("PLAYER"));
+  105	  		centerPanel.add(playAgainButton);
+  106	  		if(playerHand.compareHands(dealerHand)==1)
+  107	  			winnerLabel=new JLabel("YOU WON!");
+  108	  		else
+  109	  			winnerLabel=new JLabel("Dealer won");
+  110	  		centerPanel.add(winnerLabel);
+  111	  		deck.reShuffle();
+  112	  			
+
+
+
+
+
+
+
+2012-05-29 22:16                src/PokerGame.java                Page 3
+
+
+  113	  		
+  114	  		mainFrame=new JFrame();
+  115	  		mainFrame.setSize(1200,800);
+  116	  		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  117	  		mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
+  118	  		mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);
+  119	  		mainFrame.getContentPane().add(BorderLayout.CENTER, centerPanel);
+  120	  		mainFrame.setVisible(true);
+  121		}
+  122	
+  123	/**
+  124		Sets up the Poker game when the client clicks the Play button.
+  125	*/
+  126		class playButtonListener implements ActionListener{
+  127			public void actionPerformed(ActionEvent event){
+  128		
+  129	  			playerSetUp();
+  130	  		
+  131	  			dealerPanel=new JPanel();
+  132	  			playerPanel=new JPanel();
+  133	  			centerPanel=new JPanel();
+  134	  			playAgainButton=new JButton("Play Again");
+  135	  			playAgainButton.addActionListener(new playAgainListener());
+  136	  			for(int i=0;i<5;i++){
+  137	  				dealerPanel.add(new JLabel(getCardImage(dealerHand.get(i))));
+  138	  			}
+  139	  			
+  140	  			for(int i=0;i<5;i++){
+  141	  				playerPanel.add(new JLabel(getCardImage(playerHand.get(i))));
+  142	  			}
+  143	  			dealerPanel.add(new JLabel("DEALER"));
+  144	  			playerPanel.add(new JLabel("PLAYER"));
+  145	  			centerPanel.add(BorderLayout.CENTER,playAgainButton);
+  146	  			if(playerHand.compareHands(dealerHand)==1)
+  147	  				winnerLabel=new JLabel("YOU WON!");
+  148	  			else
+  149	  				winnerLabel=new JLabel("Dealer won");
+  150	  			centerPanel.add(winnerLabel);
+  151	  			deck.reShuffle();
+  152	  			
+  153	  		
+  154	  			mainFrame=new JFrame();
+  155	  			mainFrame.setSize(1200,800);
+  156	  			mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  157	  			mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
+  158	  			mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);
+  159	  			mainFrame.getContentPane().add(BorderLayout.CENTER, centerPanel);
+  160	  			playButtonFrame.dispose();
+  161	  			mainFrame.setVisible(true);
+  162	  	}
+  163	  }
+  164	  
+  165	/**
+  166		Sets up the Poker game when the Client clicks the PlayAgain button.
+  167	*/
+  168	  class playAgainListener implements ActionListener{
+
+
+
+
+
+
+
+2012-05-29 22:16                src/PokerGame.java                Page 4
+
+
+  169	  	public void actionPerformed(ActionEvent event){
+  170	  		mainFrame.dispose();
+  171	  		PokerGame gui2=new PokerGame();
+  172	  		gui2.replay();
+  173	  	}
+  174	  	
+  175	  }
+  176	
+  177	
+  178	
+  179	}
+  180	
+  181	
+  182	
+  183	
+  184	
+  185	
+  186	
+  187	
+  188	
+  189	
+  190	
+  191	
+  192	
+  193	
+  194	
+  195	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

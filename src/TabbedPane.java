@@ -1,7 +1,5 @@
 ///////modified from http://www.cs.cf.ac.uk/Dave/HCI/HCI_Handout_CALLER/node61.html
 
-
-
 import java.awt.*;
 import javax.swing.*;
 
@@ -22,12 +20,7 @@ class TabbedPane extends  JFrame
 
 
     public TabbedPane()
-    {
-	// NOTE: to reduce the amount of code in this example, it uses
-	// panels with a NULL layout.  This is NOT suitable for
-	// production code since it may not display correctly for
-	// a look-and-feel.
-		
+    {		
 	setTitle( "Poker Instructions" );
 	setSize( 796, 1000 );
 	setBackground( Color.gray );

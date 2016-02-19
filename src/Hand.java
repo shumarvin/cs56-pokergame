@@ -11,6 +11,27 @@ public class Hand extends ArrayList<Card>{
 	public Hand(){
 		super(1);
 	}
+    /**
+       Constructor that sets a hand given 2 Cards as arguments. Meant
+       to be used at the start of a game for the player
+       @param a Card a
+       @param b Card b
+    */	
+	public Hand(Card a, Card b){
+		super(2);
+		this.add(a); this.add(b);
+	}
+     /**
+       Constructor that sets a hand given 3 Cards as arguments. Meant
+       to be used at the start of a game for the dealer
+       @param a Card a
+       @param b Card b
+       @param c Card c
+    */	
+    public Hand(Card a, Card b, Card c){
+		super(3);
+		this.add(a); this.add(b); this.add(c);
+	}
 
 /**
 	Constructor that sets a hand given 5 Cards as arguments.
@@ -30,7 +51,7 @@ public class Hand extends ArrayList<Card>{
 	@param deck deck of Cards
 */
 	public Hand(Deck deck){
-		super(5);
+	    super(2);
 		for(Card c:deck.dealCards())
 			this.add(c);
 	}
@@ -288,6 +309,7 @@ public class Hand extends ArrayList<Card>{
 	Returns 1 if "this" hand is better than "otherHand" or returns 0
 	if the opposite.
 	@param otherHand hand to be compared
+	Precondition: both hands must be of size 5
 */
 	public int compareHands(Hand otherHand){
 		int player1Value=0;

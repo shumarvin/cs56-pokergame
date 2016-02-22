@@ -229,14 +229,14 @@ import org.junit.Test;
 		Card card4=new Card(10,"S");
 		Card card5=new Card(6,"S");
 		
-		Card card11=new Card(14,"D");
+		Card card11=new Card(11,"D");
 		Card card22=new Card(12,"H");
-		Card card33=new Card(14,"C");
+		Card card33=new Card(11,"C");
 		Card card44=new Card(3,"S");
 		Card card55=new Card(3,"H");
 		Hand hand=new Hand(card1,card2,card3,card4,card5);
 		Hand otherHand=new Hand(card11,card22,card33,card44,card55);
-		assertEquals(hand.sameHand(otherHand),0);
+		assertEquals(1, hand.sameHand(otherHand));
 	}
 		
 	/**
@@ -287,7 +287,7 @@ import org.junit.Test;
 		test method sameHand() for full house in Hand class
 	*/
 	
-	@Test public void testSameHandFulHouse1()
+	@Test public void testSameHandFullHouse1()
 	{
 		Card card1=new Card(10,"D");
 		Card card2=new Card(10,"H");
@@ -333,7 +333,7 @@ import org.junit.Test;
 	
 	@Test public void testSameHandThreeOfAKind1()
 	{
-		Card card1=new Card(10,"D");
+		/*Card card1=new Card(10,"D");
 		Card card2=new Card(10,"H");
 		Card card3=new Card(10,"C");
 		Card card4=new Card(11,"S");
@@ -344,9 +344,44 @@ import org.junit.Test;
 		Card card33=new Card(14,"C");
 		Card card44=new Card(9,"S");
 		Card card55=new Card(8,"H");
+		*/
+		
+		
+		Card card1=new Card(12,"H");
+		Card card2=new Card(7,"D");
+		Card card3=new Card(14,"D");
+		Card card4=new Card(12,"C");
+		Card card5=new Card(12,"S");
+		
+		Card card11=new Card(12,"H");
+		Card card22=new Card(7,"D");
+		Card card33=new Card(12,"C");
+		Card card44=new Card(2,"C");
+		Card card55=new Card(12,"S");
 		Hand hand=new Hand(card1,card2,card3,card4,card5);
 		Hand otherHand=new Hand(card11,card22,card33,card44,card55);
-		assertEquals(hand.sameHand(otherHand),0);
+		assertEquals(1,hand.sameHand(otherHand));
+	}
+	
+	
+	
+	@Test public void testIsThreeOfAKind2()
+	{
+		Card card1=new Card(12,"H");
+		Card card2=new Card(7,"D");
+		Card card3=new Card(14,"D");
+		Card card4=new Card(12,"C");
+		Card card5=new Card(12,"S");
+		Hand hand=new Hand(card1,card2,card3,card4,card5);
+		assertEquals(hand.isTwoPair(),true);
+		
+		Card card11=new Card(12,"H");
+		Card card22=new Card(7,"D");
+		Card card33=new Card(12,"C");
+		Card card44=new Card(2,"C");
+		Card card55=new Card(12,"S");
+		Hand otherHand=new Hand(card11,card22,card33,card44,card55);
+		assertEquals(otherHand.isThreeOfAKind(),true);
 	}
 	
 	/**

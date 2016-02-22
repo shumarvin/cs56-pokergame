@@ -31,7 +31,17 @@ public class Hand extends ArrayList<Card>{
 		this.add(a); this.add(b); this.add(c); this.add(d); this.add(e);
 		this.add(f); this.add(g);
 	}
-
+        
+        //copy constructor
+        public Hand copyHand(Hand h){
+            Hand handCopy = new Hand();
+            for(Card c: h){
+                handCopy.add(c);
+            }
+            
+            return handCopy;
+        
+        }
 
 /**
 	Constructor that creates a hand of size handSize
@@ -384,17 +394,18 @@ public int sameHand(Hand otherHand){
 			else if(handValue<otherHandValue)
 				return 0;
 			else{
-				sortedHand.remove(handPairIndex+1);
+                            return sameHandMethod(otherHand);
+				/*sortedHand.remove(handPairIndex+1);
 				sortedHand.remove(handPairIndex);
 				otherSortedHand.remove(otherHandPairIndex+1);
 				otherSortedHand.remove(otherHandPairIndex);
 				int winner = (sortedHand.get(2) > otherSortedHand.get(2)) ? 1 : 0;
-				return winner;
+				return winner;*/
 			}
 	
 		}
 		
-		else if(isTwoPair())
+		else if(isTwoPair() && !isThreeOfAKind())
 		{
 			Integer handCard=0; Integer otherHandCard=0;
 			for(int i=0;i<4;i++)
@@ -420,9 +431,41 @@ public int sameHand(Hand otherHand){
 				return 1;
 			else if(handValue<otherHandValue) 
 				return 0;
-			else 
-				return sameHand(otherHand);
-				
+			//test second pair if first two same	
+			else {
+                                int secHandVal = handValue;
+                                int secOtherHandVal = otherHandValue;
+                                handValue = 0;
+                                otherHandValue = 0;
+                                
+                                for(int i=0;i<4;i++)
+                                {
+                                        if(sortedHand.get(i)==sortedHand.get(i+1))
+					{
+						if(sortedHand.get(i)>handValue && sortedHand.get(i)!= secHandVal){
+							handValue=sortedHand.get(i);
+							handCard=handValue;
+						}
+					}
+				remove(handCard);
+                                        if(otherSortedHand.get(i)==otherSortedHand.get(i+1))
+					{
+						if(otherSortedHand.get(i)>otherHandValue && otherSortedHand.get(i) != secOtherHandVal){
+							otherHandValue=otherSortedHand.get(i);
+							otherHandCard=otherHandValue;
+						}
+					}
+				remove(otherHandCard);
+                                }
+                                
+                                if(handValue>otherHandValue)
+				return 1;
+                                else if(handValue<otherHandValue) 
+				return 0;
+				else{
+                                    return sameHandMethod(otherHand);
+				}
+                        }
 		}
 		
 		else if(isStraight())
@@ -476,8 +519,14 @@ public int sameHand(Hand otherHand){
 			}
 			if(handValue>otherHandValue)
 				return 1;
-			else
+				
+                        else if(handValue == otherHandValue){
+                            return sameHandMethod(otherHand);
+                        
+                        }
+			else{
 				return 0;
+                        }
 		}
 		else if(isFourOfAKind())
 		{
@@ -513,6 +562,7 @@ public int sameHand(Hand otherHand){
 */
 	public int sameHandMethod(Hand otherHand){
 	
+                System.out.println("Got here");
 		if(this.isEmpty())
 			return 0;
 		else if(this.getHighCardValue()>otherHand.getHighCardValue())
@@ -547,8 +597,7 @@ public int sameHand(Hand otherHand){
 							System.out.println("Cur Hand: " + curHand);
 							System.out.println("Best Hand: " + bestHand + "\n");
 							
-							if(curHand.size() == 5 && bestHand.size() == 5)
-							if(curHand.compareHands(bestHand)==1)
+							if(copyHand(curHand).compareHands(copyHand(bestHand))==1)
 								bestHand = curHand;
 
 

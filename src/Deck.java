@@ -54,9 +54,9 @@ public class Deck {
 	/**
 		Returns a Hand of 5 random Cards.
 	*/
-	public Hand dealCards(){
-		Hand hand=new Hand();
-		for(int i=0;i<2;i++)
+	public Hand dealCards(Hand hand, int numToAdd){
+		
+		for(int i=0;i<numToAdd;i++)
 		{
 			int randomNum=(int)(Math.random()*(cardsLeft));
 			Card drawnCard=this.getActiveDeck().get(randomNum);

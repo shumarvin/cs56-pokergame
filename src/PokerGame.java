@@ -75,8 +75,8 @@ public class PokerGame {
        Sets up the player's and dealer's hand.
     */	
     public void playerSetUp(){
-	playerHand=new Hand(deck);
-	dealerHand=new Hand(deck);
+	playerHand=new Hand(deck, 3);
+	dealerHand=new Hand(deck, 6);
     }
 	
     /**
@@ -123,7 +123,7 @@ public class PokerGame {
 	**/
   		
 	mainFrame=new JFrame();
-	mainFrame.setSize(1200,800);
+	mainFrame.setSize(1800,1800);
 	mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
 	mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);
@@ -174,7 +174,7 @@ public class PokerGame {
 	    **/
   		
 	    mainFrame=new JFrame();
-	    mainFrame.setSize(1200,800);
+	    mainFrame.setSize(1800,1800);
 	    mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
 	    mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);

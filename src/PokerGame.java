@@ -74,7 +74,7 @@ public class PokerGame {
 	    Hand playerHand = new Hand(deck, 2);
 	    playerHands.add(playerHand);
 	}
-	dealerHand=new Hand(deck, 0);
+	dealerHand=new Hand(deck, 5);
     }
 	
     /**
@@ -142,7 +142,7 @@ public class PokerGame {
 	    public void actionPerformed(ActionEvent event){
 		
 		JFrame selectFrame = new JFrame();	
-		Object[] possibilities = {"2", "3", "4"};
+		Object[] possibilities = {"1", "2", "3", "4"};
 		String s = (String)JOptionPane.showInputDialog(
 							       selectFrame,
 							       "Select number of players",
@@ -150,13 +150,15 @@ public class PokerGame {
 							       JOptionPane.PLAIN_MESSAGE,
 							       null,
 							       possibilities,
-							       "2");
+							       "1");
 
 		numPlayers = Integer.parseInt(s);
 		playerHands = new ArrayList<Hand>();
 		playerSetUp(numPlayers);
 		dealerPanel=new JPanel();
 		playerPanel=new JPanel();
+		JPanel bestHandsPanel = new JPanel();		
+	
 		centerPanel=new JPanel();
 		playAgainButton=new JButton("Play Again");
 		playAgainButton.addActionListener(new playAgainListener());
@@ -172,6 +174,7 @@ public class PokerGame {
 		}
 		dealerPanel.add(new JLabel("DEALER"));
 		playerPanel.add(new JLabel("PLAYER"));
+		bestHandsPanel.add(new JLabel("Best Hands"));
 		/**
 		   centerPanel.add(BorderLayout.CENTER,playAgainButton);
 		   if(playerHand.compareHands(dealerHand)==1)
@@ -182,12 +185,27 @@ public class PokerGame {
 		   deck.reShuffle();
 		**/
   		
+		ArrayList<Hand> bestPlayerHands = new ArrayList<Hand>();
+
+		for(Hand h : playerHands){
+			bestPlayerHands.add(h.getBestHand(dealerHand));
+			
+		}
 
 		JPanel main = new JPanel( new FlowLayout(FlowLayout.CENTER, 30, 0) );
-
-	
+		
 		//	main.add( dealerPanel);
 		main.add( playerPanel );
+
+		JPanel bestHands = new JPanel( new FlowLayout(FlowLayout.CENTER, 30, 0) );
+		
+		for(int i=0;i<bestPlayerHands.size();i++){
+		    Hand currentPlayer = bestPlayerHands.get(i);
+		    for(int j = 0; j < currentPlayer.size(); j++)
+			bestHandsPanel.add(new JLabel(getCardImage(currentPlayer.get(j))));
+		}
+		bestHands.add(bestHandsPanel);
+
 		
 		mainFrame=new JFrame();
 		mainFrame.setSize(1800,1800);
@@ -195,6 +213,7 @@ public class PokerGame {
 		mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
 		//mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);
 		mainFrame.getContentPane().add(BorderLayout.CENTER, main);
+		mainFrame.getContentPane().add(BorderLayout.SOUTH, bestHands);
 		playButtonFrame.dispose();
 		mainFrame.setVisible(true);
 	    }	

@@ -24,6 +24,15 @@ public class Hand extends ArrayList<Card>{
 		this.add(a); this.add(b); this.add(c); this.add(d); this.add(e);
 	}
 
+
+
+	public Hand(Card a, Card b, Card c, Card d, Card e, Card f, Card g){
+		super(7);
+		this.add(a); this.add(b); this.add(c); this.add(d); this.add(e);
+		this.add(f); this.add(g);
+	}
+
+
 /**
 	Constructor that creates a hand of size handSize
 	@param deck deck of Cards
@@ -516,6 +525,47 @@ public int sameHand(Hand otherHand){
 			return sameHandMethod(otherHand);
 		}
 }
+
+
+
+	public Hand getBestHand(Hand dealerHand){
+		//precondition : dealerHand has 5 cards
+	
+		Hand allCards = new Hand(this.get(0), this.get(1), dealerHand.get(0), dealerHand.get(1), dealerHand.get(2), dealerHand.get(3), dealerHand.get(4));
+		
+		Hand bestHand = new Hand(this.get(0), this.get(1), dealerHand.get(0), dealerHand.get(1), dealerHand.get(2));
+
+
+
+
+		for (int a = 0; a < allCards.size(); ++a) {
+    			for (int b = a + 1; b < allCards.size(); ++b) {
+      				for (int c = b + 1; c < allCards.size(); ++c) {
+      					for (int d = c + 1; d < allCards.size(); ++d) {
+      						for (int e = d + 1; e < allCards.size(); ++e) {
+      							Hand curHand = new Hand(allCards.get(a), allCards.get(b), allCards.get(c), allCards.get(d), allCards.get(e));
+							System.out.println("Cur Hand: " + curHand);
+							System.out.println("Best Hand: " + bestHand + "\n");
+							
+							if(curHand.size() == 5 && bestHand.size() == 5)
+							if(curHand.compareHands(bestHand)==1)
+								bestHand = curHand;
+
+
+
+
+
+   						}
+   					}	
+   				}
+   			}
+		}
+
+		return bestHand;
+
+	}
+
+
 
 
 }

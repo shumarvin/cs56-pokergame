@@ -11,9 +11,6 @@ public class Hand extends ArrayList<Card>{
 	public Hand(){
 		super(1);
 	}
-   
-     
-
 /**
 	Constructor that sets a hand given 5 Cards as arguments.
 	@param a Card a
@@ -28,8 +25,9 @@ public class Hand extends ArrayList<Card>{
 	}
 
 /**
-	Constructor that sets a 5 Card hand based on the deck passed in.
+	Constructor that creates a hand of size handSize
 	@param deck deck of Cards
+	@param handSize the size of the hand
 */
 	public Hand(Deck deck, int handSize){
 	    super(handSize);
@@ -45,11 +43,12 @@ public class Hand extends ArrayList<Card>{
 	}
 	
 /**
-	Adds 5 Cards from the deck to the Hand.
+	Adds a specified number of cards to the hand
 	@param deck deck of Cards
+	@param numCardsToAdd the number of cards to add to the hand
 */	
-	public void draw(Deck deck, int handSize){
-		deck.dealCards(this, handSize);
+	public void draw(Deck deck, int numCardsToAdd){
+		deck.dealCards(this, numCardsToAdd);
 	}
 
 /**

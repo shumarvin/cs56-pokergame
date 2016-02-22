@@ -52,10 +52,11 @@ public class Deck {
 	}
 	
 	/**
-		Returns a Hand of 5 random Cards.
+	Deals a specified number of cards to the hand and returns the hand	
+	@param hand the hand to add the cards to
+	@param numToAdd the number of cards to add to the hand 
 	*/
 	public Hand dealCards(Hand hand, int numToAdd){
-		
 		for(int i=0;i<numToAdd;i++)
 		{
 			int randomNum=(int)(Math.random()*(cardsLeft));

@@ -141,6 +141,7 @@ public class PokerGame {
 		centerPanel=new JPanel();
 		playAgainButton=new JButton("Play Again");
 		playAgainButton.addActionListener(new playButtonListener());
+		centerPanel.add(BorderLayout.NORTH,playAgainButton);
 
 		/**Get the card images for all the cards in the dealer's
 		   and players' hands and put them in their respective
@@ -172,7 +173,7 @@ public class PokerGame {
 		    player4Panel.add(new JLabel("PLAYER 4"));
 		bestHandsPanel.add(new JLabel("Best Hands"));
 		
-		   centerPanel.add(BorderLayout.CENTER,playAgainButton);
+		 
 		   /**
 		   if(playerHand.compareHands(dealerHand)==1)
 		   winnerLabel=new JLabel("YOU WON!");

@@ -15,9 +15,9 @@ public class PokerGame {
     private JFrame playButtonFrame;
     private JButton playButton, playAgainButton, infoButton;
     private JLabel winnerLabel;
-    private JPanel dealerPanel,playerPanel, player1Panel,player2Panel,
-	player3Panel,player4Panel,centerPanel;
-    private Hand dealerHand; //playerHand;
+    private JPanel dealerPanel,player1Panel,player2Panel,player3Panel,
+	player4Panel,centerPanel;
+    private Hand dealerHand; 
     private ArrayList<Hand> playerHands;
     private Deck deck;
     private int numPlayers;
@@ -89,50 +89,11 @@ public class PokerGame {
 	URL url=getClass().getResource(dir+cardFile);
 	return new ImageIcon(url);
     }
-	
-    /**
-       Method that sets up a new Poker game with new hands.
-    */
-    public void replay(){
-	playerSetUp(numPlayers);
-	dealerPanel=new JPanel();
-	playerPanel = new JPanel();
-	centerPanel=new JPanel();
-	playAgainButton=new JButton("Play Again");
-	playAgainButton.addActionListener(new playAgainListener());
-	for(int i=0;i<dealerHand.size();i++)
-	    dealerPanel.add(new JLabel(getCardImage(dealerHand.get(i))));
-	
-	/**
-	for(int i = 0; i < numPlayers; i++){
-	    playerPanels[i].add(new JLabel(getCardImage(playerHands.get(i))));
-	    } **/	
-	    dealerPanel.add(new JLabel("DEALER"));
-	    playerPanel.add(new JLabel("PLAYER"));
-	    centerPanel.add(playAgainButton);
-	    /**
-	       if(playerHand.compareHands(dealerHand)==1)
-	       winnerLabel=new JLabel("YOU WON!");
-	       else
-	       winnerLabel=new JLabel("Dealer won");
-	       centerPanel.add(winnerLabel);
-	       deck.reShuffle();
-	    **/
-  		
-	    mainFrame=new JFrame();
-	    mainFrame.setSize(1800,1800);
-	    mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
-	    mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);
-	    mainFrame.getContentPane().add(BorderLayout.CENTER, centerPanel);
-	    mainFrame.setVisible(true);
-	}
-
+    //The listener for the How To Play button
 	class infoButtonListener implements ActionListener{
-	
 	    public void actionPerformed(ActionEvent event){
 		TabbedPane infoPane = new TabbedPane();
-		infoPane.setVisible( true );
+		infoPane.setVisible(true);
 	    }
 	}
 	
@@ -171,7 +132,6 @@ public class PokerGame {
 		
 		//set up the panels for the deal and all the players
 		dealerPanel=new JPanel();
-		playerPanel=new JPanel();
 		player1Panel = new JPanel();
 		player2Panel = new JPanel();
 		player3Panel = new JPanel();
@@ -180,7 +140,7 @@ public class PokerGame {
 		JPanel bestHandsPanel = new JPanel();		
 		centerPanel=new JPanel();
 		playAgainButton=new JButton("Play Again");
-		playAgainButton.addActionListener(new playAgainListener());
+		playAgainButton.addActionListener(new playButtonListener());
 
 		/**Get the card images for all the cards in the dealer's
 		   and players' hands and put them in their respective
@@ -201,15 +161,19 @@ public class PokerGame {
 		for(int i=0;i<player4.size();i++)
 			player4Panel.add(new JLabel(getCardImage(player4.get(i))));
 		}
+		
 		//add labels to all the panels
 		dealerPanel.add(new JLabel("DEALER"));
 		player1Panel.add(new JLabel("PLAYER 1"));
 		player2Panel.add(new JLabel("PLAYER 2"));
-		player3Panel.add(new JLabel("PLAYER 3"));
-		player4Panel.add(new JLabel("PLAYER 4"));
+		if(playerHands.size() >= 3)
+		    player3Panel.add(new JLabel("PLAYER 3"));
+		if(playerHands.size() == 4)
+		    player4Panel.add(new JLabel("PLAYER 4"));
 		bestHandsPanel.add(new JLabel("Best Hands"));
-		/**
+		
 		   centerPanel.add(BorderLayout.CENTER,playAgainButton);
+		   /**
 		   if(playerHand.compareHands(dealerHand)==1)
 		   winnerLabel=new JLabel("YOU WON!");
 		   else
@@ -225,9 +189,8 @@ public class PokerGame {
 			
 		}
 
-		JPanel main = new JPanel( new FlowLayout(FlowLayout.CENTER, 30, 0) );
-		
-		//	main.add( dealerPanel);
+		//Create a FlowLayout Panel to display the players' cards
+		JPanel main = new JPanel( new FlowLayout(FlowLayout.CENTER,20, 0) );
 		main.add(player1Panel);
 		main.add(player2Panel);
 		main.add(player3Panel);
@@ -246,25 +209,18 @@ public class PokerGame {
 		mainFrame=new JFrame();
 		mainFrame.setSize(1800,1800);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		/**For the GUI, the dealer will be on top while the players
+		   will be in the center
+		**/
 		mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
-		//mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);
 		mainFrame.getContentPane().add(BorderLayout.CENTER, main);
 		//mainFrame.getContentPane().add(BorderLayout.SOUTH, bestHands);
+		mainFrame.getContentPane().add(BorderLayout.SOUTH, centerPanel);
 		playButtonFrame.dispose();
 		mainFrame.setVisible(true);
 	    }	
   	}
-  
-    /**
-       Sets up the Poker game when the Client clicks the PlayAgain button.
-    */
-    class playAgainListener implements ActionListener{
-  	public void actionPerformed(ActionEvent event){
-	    mainFrame.dispose();
-	    PokerGame gui2=new PokerGame();
-	    gui2.replay();
-  	}
-    }
 }
 
 

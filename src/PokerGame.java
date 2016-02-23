@@ -15,7 +15,8 @@ public class PokerGame {
     private JFrame playButtonFrame;
     private JButton playButton, playAgainButton, infoButton;
     private JLabel winnerLabel;
-    private JPanel dealerPanel,playerPanel, centerPanel;
+    private JPanel dealerPanel,playerPanel, player1Panel,player2Panel,
+	player3Panel,player4Panel,centerPanel;
     private Hand dealerHand; //playerHand;
     private ArrayList<Hand> playerHands;
     private Deck deck;
@@ -140,40 +141,72 @@ public class PokerGame {
 	*/
 	class playButtonListener implements ActionListener{
 	    public void actionPerformed(ActionEvent event){
-		
-		JFrame selectFrame = new JFrame();	
-		Object[] possibilities = {"1", "2", "3", "4"};
-		String s = (String)JOptionPane.showInputDialog(
-							       selectFrame,
-							       "Select number of players",
-							       "Number of Players",
-							       JOptionPane.PLAIN_MESSAGE,
-							       null,
-							       possibilities,
-							       "1");
 
+		/**After clicking the play button, make a pop-up
+		   box that allows the user to choose the number of 
+		   players
+		**/
+		JFrame selectFrame = new JFrame();	
+		Object[] possibilities = {"2", "3", "4"};
+		String s = (String)JOptionPane.showInputDialog(selectFrame,
+                      "Select number of players",
+		      "Number of Players",
+		       JOptionPane.PLAIN_MESSAGE,
+		       null,
+		       possibilities,
+		       "2");
 		numPlayers = Integer.parseInt(s);
+
+		///set up the player hands
 		playerHands = new ArrayList<Hand>();
 		playerSetUp(numPlayers);
+		Hand player1 = playerHands.get(0);
+		Hand player2 = playerHands.get(1);
+		Hand player3 = new Hand();
+		Hand player4 = new Hand();
+		if(playerHands.size() >= 3)
+		    player3 = playerHands.get(2);
+		if(playerHands.size() == 4)
+		    player4 = playerHands.get(3);
+		
+		//set up the panels for the deal and all the players
 		dealerPanel=new JPanel();
 		playerPanel=new JPanel();
+		player1Panel = new JPanel();
+		player2Panel = new JPanel();
+		player3Panel = new JPanel();
+		player4Panel = new JPanel();
+		
 		JPanel bestHandsPanel = new JPanel();		
-	
 		centerPanel=new JPanel();
 		playAgainButton=new JButton("Play Again");
 		playAgainButton.addActionListener(new playAgainListener());
 
-		for(int i=0;i<dealerHand.size();i++){
-		    dealerPanel.add(new JLabel(getCardImage(dealerHand.get(i))));
+		/**Get the card images for all the cards in the dealer's
+		   and players' hands and put them in their respective
+		   panels
+		**/
+		for(int i=0;i<dealerHand.size();i++)
+		    dealerPanel.add(new JLabel(getCardImage(dealerHand.get(i)))); 			
+		for(int i=0;i<player1.size();i++)
+			player1Panel.add(new JLabel(getCardImage(player1.get(i))));
+	      
+		for(int i=0;i<player2.size();i++)
+			player2Panel.add(new JLabel(getCardImage(player2.get(i))));
+		if(playerHands.size() >= 3){
+		for(int i=0;i<player3.size();i++)
+			player3Panel.add(new JLabel(getCardImage(player3.get(i))));
+	        }
+		if(playerHands.size() == 4){
+		for(int i=0;i<player4.size();i++)
+			player4Panel.add(new JLabel(getCardImage(player4.get(i))));
 		}
-  			
-		for(int i=0;i<playerHands.size();i++){
-		    Hand currentPlayer = playerHands.get(i);
-		    for(int j = 0; j < currentPlayer.size(); j++)
-			playerPanel.add(new JLabel(getCardImage(currentPlayer.get(j))));
-		}
+		//add labels to all the panels
 		dealerPanel.add(new JLabel("DEALER"));
-		playerPanel.add(new JLabel("PLAYER"));
+		player1Panel.add(new JLabel("PLAYER 1"));
+		player2Panel.add(new JLabel("PLAYER 2"));
+		player3Panel.add(new JLabel("PLAYER 3"));
+		player4Panel.add(new JLabel("PLAYER 4"));
 		bestHandsPanel.add(new JLabel("Best Hands"));
 		/**
 		   centerPanel.add(BorderLayout.CENTER,playAgainButton);
@@ -195,7 +228,10 @@ public class PokerGame {
 		JPanel main = new JPanel( new FlowLayout(FlowLayout.CENTER, 30, 0) );
 		
 		//	main.add( dealerPanel);
-		main.add( playerPanel );
+		main.add(player1Panel);
+		main.add(player2Panel);
+		main.add(player3Panel);
+		main.add(player4Panel);
 
 		JPanel bestHands = new JPanel( new FlowLayout(FlowLayout.CENTER, 30, 0) );
 		
@@ -213,7 +249,7 @@ public class PokerGame {
 		mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
 		//mainFrame.getContentPane().add(BorderLayout.SOUTH, playerPanel);
 		mainFrame.getContentPane().add(BorderLayout.CENTER, main);
-		mainFrame.getContentPane().add(BorderLayout.SOUTH, bestHands);
+		//mainFrame.getContentPane().add(BorderLayout.SOUTH, bestHands);
 		playButtonFrame.dispose();
 		mainFrame.setVisible(true);
 	    }	

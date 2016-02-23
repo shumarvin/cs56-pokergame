@@ -16,7 +16,7 @@ public class PokerGame {
     private JButton playButton, playAgainButton, infoButton;
     private JLabel winnerLabel;
     private JPanel dealerPanel,player1Panel,player2Panel,player3Panel,
-	player4Panel,centerPanel;
+	player4Panel,bottomPanel;
     private Hand dealerHand; 
     private ArrayList<Hand> playerHands;
     private Deck deck;
@@ -118,6 +118,9 @@ public class PokerGame {
 		       "2");
 		numPlayers = Integer.parseInt(s);
 
+		//shuffle the deck if playing again
+		deck.reShuffle();
+
 		///set up the player hands
 		playerHands = new ArrayList<Hand>();
 		playerSetUp(numPlayers);
@@ -131,17 +134,11 @@ public class PokerGame {
 		    player4 = playerHands.get(3);
 		
 		//set up the panels for the deal and all the players
-		dealerPanel=new JPanel();
+		dealerPanel  = new JPanel();
 		player1Panel = new JPanel();
 		player2Panel = new JPanel();
 		player3Panel = new JPanel();
 		player4Panel = new JPanel();
-		
-		JPanel bestHandsPanel = new JPanel();		
-		centerPanel=new JPanel();
-		playAgainButton=new JButton("Play Again");
-		playAgainButton.addActionListener(new playButtonListener());
-		centerPanel.add(BorderLayout.NORTH,playAgainButton);
 
 		/**Get the card images for all the cards in the dealer's
 		   and players' hands and put them in their respective
@@ -155,11 +152,11 @@ public class PokerGame {
 		for(int i=0;i<player2.size();i++)
 			player2Panel.add(new JLabel(getCardImage(player2.get(i))));
 		if(playerHands.size() >= 3){
-		for(int i=0;i<player3.size();i++)
+		    for(int i=0;i<player3.size();i++)
 			player3Panel.add(new JLabel(getCardImage(player3.get(i))));
 	        }
 		if(playerHands.size() == 4){
-		for(int i=0;i<player4.size();i++)
+		    for(int i=0;i<player4.size();i++)
 			player4Panel.add(new JLabel(getCardImage(player4.get(i))));
 		}
 		
@@ -171,40 +168,79 @@ public class PokerGame {
 		    player3Panel.add(new JLabel("PLAYER 3"));
 		if(playerHands.size() == 4)
 		    player4Panel.add(new JLabel("PLAYER 4"));
-		bestHandsPanel.add(new JLabel("Best Hands"));
+		//	bestHandsPanel.add(new JLabel("Best Hands"));
 		
-		 
-		   /**
-		   if(playerHand.compareHands(dealerHand)==1)
-		   winnerLabel=new JLabel("YOU WON!");
-		   else
-		   winnerLabel=new JLabel("Dealer won");
-		   centerPanel.add(winnerLabel);
-		   deck.reShuffle();
-		**/
-  		
-		ArrayList<Hand> bestPlayerHands = new ArrayList<Hand>();
-
-		for(Hand h : playerHands){
-			bestPlayerHands.add(h.getBestHand(dealerHand));
-			
-		}
-
+      
 		//Create a FlowLayout Panel to display the players' cards
-		JPanel main = new JPanel( new FlowLayout(FlowLayout.CENTER,20, 0) );
-		main.add(player1Panel);
-		main.add(player2Panel);
-		main.add(player3Panel);
-		main.add(player4Panel);
+		JPanel players = new JPanel( new FlowLayout(FlowLayout.CENTER,20, 0) );
+		players.add(player1Panel);
+		players.add(player2Panel);
+		if(playerHands.size() >= 3)
+		    players.add(player3Panel);
+		if(playerHands.size() == 4)
+		    players.add(player4Panel);
 
-		JPanel bestHands = new JPanel( new FlowLayout(FlowLayout.CENTER, 30, 0) );
-		
-		for(int i=0;i<bestPlayerHands.size();i++){
-		    Hand currentPlayer = bestPlayerHands.get(i);
-		    for(int j = 0; j < currentPlayer.size(); j++)
-			bestHandsPanel.add(new JLabel(getCardImage(currentPlayer.get(j))));
+		/**
+		  Create a list of the best possible hand for each player
+		  using their 2 cards and the dealer's 5
+		**/
+		ArrayList<Hand> bestPlayerHands = new ArrayList<Hand>();
+		for(Hand h : playerHands){
+		    bestPlayerHands.add(h.getBestHand(dealerHand));    
 		}
-		bestHands.add(bestHandsPanel);
+		
+		JPanel bestHandsPanel = new JPanel();		
+
+		Hand bestPlayer1Hand = bestPlayerHands.get(0);
+		Hand bestPlayer2Hand = bestPlayerHands.get(1);
+		Hand bestPlayer3Hand = new Hand();
+		Hand bestPlayer4Hand = new Hand();
+
+		if(bestPlayerHands.size() == 2){
+		    if(bestPlayer1Hand.compareHands(bestPlayer2Hand) == 1)
+			winnerLabel = new JLabel("Player 1 wins!");
+		    else
+			winnerLabel = new JLabel("Player 2 wins!");
+		}
+		/**
+		if(bestPlayerHands.size() == 3){
+		    bestPlayer3Hand = bestPlayerHands.get(2);
+		    if(bestPlayer1Hand.compareHands(bestpPlayer2Hand) == 1){
+			if(bestPlayer1Hand.compareHands(bestPlayer3Hand) == 1)
+			    winnerLabel = new JLabel("Player 1 wins!");
+			else
+			    winnerLabel = new JLabel("Player 3 wins!");
+		    }
+		    if(bestPlayer2Hand.compareHands(bestPlayer1Hand) == 1){
+			if(bestPlayer2Hand.compareHands(bestPlayer3Hand) == 1)
+			    winnerLabel = new JLabel("Player 2 wins!");
+			else
+			    winnerLabel = new JLabel("Player 3 wins!");
+		    }	
+		}
+		else{
+		    bestPlayer3Hand = bestPlayerHands.get(2);
+		    bestPlayer4Hand = bestPlayerHands.get(3);
+		    if(bestPlayer1Hand.compareHands(bestpPlayer2Hand) == 1){
+			if(bestPlayer1Hand.compareHands(bestPlayer3Hand) == 1){
+			    if(bestPlayer1Hand.compareHands(bestPlayer3Hand) == 1){
+			    winnerLabel = new JLabel("Player 1 wins!");
+			else
+			    winnerLabel = new JLabel("Player 3 wins!");
+		    }
+		    if(bestPlayer2Hand.compareHands(bestPlayer1Hand) == 1){
+			if(bestPlayer2Hand.compareHands(bestPlayer3Hand) == 1)
+			    winnerLabel = new JLabel("Player 2 wins!");
+			else
+			    winnerLabel = new JLabel("Player 3 wins!");
+		    }	
+		}
+		**/
+		bottomPanel=new JPanel();
+		playAgainButton=new JButton("Play Again");
+		playAgainButton.addActionListener(new playButtonListener());
+		bottomPanel.add(BorderLayout.NORTH, winnerLabel);
+		bottomPanel.add(BorderLayout.SOUTH,playAgainButton);
 
 		
 		mainFrame=new JFrame();
@@ -215,9 +251,8 @@ public class PokerGame {
 		   will be in the center
 		**/
 		mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
-		mainFrame.getContentPane().add(BorderLayout.CENTER, main);
-		//mainFrame.getContentPane().add(BorderLayout.SOUTH, bestHands);
-		mainFrame.getContentPane().add(BorderLayout.SOUTH, centerPanel);
+		mainFrame.getContentPane().add(BorderLayout.CENTER, players);
+		mainFrame.getContentPane().add(BorderLayout.SOUTH, bottomPanel);
 		playButtonFrame.dispose();
 		mainFrame.setVisible(true);
 	    }	

@@ -38,9 +38,7 @@ public class Hand extends ArrayList<Card>{
 	for(Card c: h){
 	    handCopy.add(c);
 	}
-            
 	return handCopy;
-        
     }
 
     /**
@@ -135,7 +133,7 @@ public class Hand extends ArrayList<Card>{
     public boolean isFourOfAKind(){
 	ArrayList<Integer> sortedHand=this.sortHand();
 	int quadCounter=0;
-	for(int i=0;i<4;i++)
+	for(int i = 0;i < 4;i++)
 	    {
 		if(sortedHand.get(i)==sortedHand.get(i+1))
 		    {
@@ -561,13 +559,11 @@ public class Hand extends ArrayList<Card>{
        @param otherHand hand to be compared
     */
     public int sameHandMethod(Hand otherHand){
-	
-	System.out.println("Got here");
 	if(this.isEmpty())
 	    return 0;
 	else if(this.getHighCardValue()>otherHand.getHighCardValue())
 	    return 1;
-	else if(this.getHighCardValue()<otherHand.getHighCardValue())//made changes
+	else if(this.getHighCardValue()<otherHand.getHighCardValue())
 	    return 0;
 	else{
 	    this.remove(this.getHighCard()); 
@@ -576,16 +572,17 @@ public class Hand extends ArrayList<Card>{
 	}
     }
 
-
-
+    /**
+       Gets the best possible hand combination using the dealer's and
+       the player's hands
+       Precondition: dealerHand has 5 cards
+       @param dealerHand the dealer's Hand
+    **/
     public Hand getBestHand(Hand dealerHand){
-	//precondition : dealerHand has 5 cards
 	
 	Hand allCards = new Hand(this.get(0), this.get(1), dealerHand.get(0), dealerHand.get(1), dealerHand.get(2), dealerHand.get(3), dealerHand.get(4));
 		
 	Hand bestHand = new Hand(this.get(0), this.get(1), dealerHand.get(0), dealerHand.get(1), dealerHand.get(2));
-
-
 
 
 	for (int a = 0; a < allCards.size(); ++a) {
@@ -594,20 +591,14 @@ public class Hand extends ArrayList<Card>{
 		    for (int d = c + 1; d < allCards.size(); ++d) {
 			for (int e = d + 1; e < allCards.size(); ++e) {
 			    Hand curHand = new Hand(allCards.get(a), allCards.get(b), allCards.get(c), allCards.get(d), allCards.get(e));
-			    System.out.println("Cur Hand: " + curHand);
-			    System.out.println("Best Hand: " + bestHand + "\n");
-							
 			    if(copyHand(curHand).compareHands(copyHand(bestHand))==1)
 				bestHand = curHand;
-
 			}
 		    }	
 		}
 	    }
 	}
-
 	return bestHand;
-
     }
 
 }

@@ -228,27 +228,22 @@ public class PokerGame {
 		    else
 			winnerLabel = new JLabel("Player 1 wins!");
 		}
-		/**
-		   4 players
+		
+		  // 4 players
 		else{
+
 		    bestPlayer3Hand = bestPlayerHands.get(2);
 		    bestPlayer4Hand = bestPlayerHands.get(3);
-		    if(bestPlayer1Hand.compareHands(bestpPlayer2Hand) == 1){
-			if(bestPlayer1Hand.compareHands(bestPlayer3Hand) == 1){
-			    if(bestPlayer1Hand.compareHands(bestPlayer4Hand) == 1)
-				winnerLabel = new JLabel("Player 1 wins!");
+
+		int bestHand = 0;
+		for(int i = 1; i < bestPlayerHands.size(); i++){
+			if(bestPlayerHands.get(i).compareHands(bestPlayerHands.get(bestHand)) == 1){
+				bestHand = i;
 			}
-		    }
-		    if(bestPlayer2Hand.compareHands(bestPlayer3Hand) == 1){
-			if(bestPlayer2Hand.compareHands(bestPlayer4Hand) == 1)
-			    winnerLabel = new JLabel("Player 2 wins!");
-		    }
-		    if(bestPlayer3Hand.compareHands(bestPlayer4Hand) == 1)
-			winnerLabel = new JLabel("Player 3 wins!");
-		    else
-			winnerLabel = new JLabel("Player 4 wins!");
 		}
-		**/
+		winnerLabel = new JLabel("Player " + (bestHand + 1) + " wins!");
+		}
+		
 
 		/**
 		   Instantiate the bottom Panel and add the replay button and the winner label

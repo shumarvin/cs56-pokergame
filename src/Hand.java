@@ -52,14 +52,6 @@ public class Hand extends ArrayList<Card>{
     }
 
     /**
-       Discards the hand into the discardPile of the deck.
-       @param deck deck of Cards
-    */	
-    public void discardHand(Deck deck){
-	deck.addToDiscardPile(this);
-    }
-	
-    /**
        Adds a specified number of cards to the hand
        @param deck deck of Cards
        @param numCardsToAdd the number of cards to add to the hand

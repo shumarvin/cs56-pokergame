@@ -202,39 +202,6 @@ public class PokerGame {
 
 		//Determine the winners
 
-		//2 players
-		if(bestPlayerHands.size() == 2){
-		    if(bestPlayer1Hand.compareHands(bestPlayer2Hand) == 1)
-			winnerLabel = new JLabel("Player 1 wins!");
-		    else
-			winnerLabel = new JLabel("Player 2 wins!");
-		}
-		//3 players
-		if(bestPlayerHands.size() == 3){
-		    bestPlayer3Hand = bestPlayerHands.get(2);
-		    //if player1 beats player2
-		    if(bestPlayer1Hand.compareHands(bestPlayer2Hand) == 1){
-			if(bestPlayer1Hand.compareHands(bestPlayer3Hand) == 1)
-			    winnerLabel = new JLabel("Player 1 wins!");
-			else
-			    winnerLabel = new JLabel("Player 3 wins!");
-		    }
-		    //since player1 didn't beat player2, compare player2 and player3
-		    else if(bestPlayer2Hand.compareHands(bestPlayer3Hand) == 1)
-			winnerLabel = new JLabel("Player 2 wins!");
-		    //since player2 didn't beat player3, compare player3 and player 1
-		    else if(bestPlayer3Hand.compareHands(bestPlayer1Hand) == 1)
-			winnerLabel = new JLabel("Player 3 wins!");
-		    else
-			winnerLabel = new JLabel("Player 1 wins!");
-		}
-		
-		  // 4 players
-		else{
-
-		    bestPlayer3Hand = bestPlayerHands.get(2);
-		    bestPlayer4Hand = bestPlayerHands.get(3);
-
 		int bestHand = 0;
 		for(int i = 1; i < bestPlayerHands.size(); i++){
 			if(bestPlayerHands.get(i).compareHands(bestPlayerHands.get(bestHand)) == 1){
@@ -242,7 +209,6 @@ public class PokerGame {
 			}
 		}
 		winnerLabel = new JLabel("Player " + (bestHand + 1) + " wins!");
-		}
 		
 
 		/**

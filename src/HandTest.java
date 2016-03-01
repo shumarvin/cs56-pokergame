@@ -493,7 +493,37 @@ import org.junit.Test;
 		Hand otherHand=new Hand(card11,card22,card33,card44,card55);
 		assertEquals(hand.sameHand(otherHand),1);
 	}
-
+        
+        
+        @Test public void testCompareFourOfAKind()
+	{
+		Card card1=new Card(12,"D");
+		Card card2=new Card(12,"H");
+		Card card3=new Card(14,"C");
+		Card card4=new Card(12,"S");
+		Card card5=new Card(3,"S");
+		
+		Card card11=new Card(11,"H");
+		Card card22=new Card(14,"H");
+		
+		Card card33=new Card(12,"C");
+		Card card44=new Card(7,"S");
+		
+		Hand dealerHand=new Hand(card1,card2,card3,card4,card5);
+		
+		Hand player1=new Hand(card11,card22);
+		Hand player2 = new Hand(card33,card44);
+		Hand best1 = player1.getBestHand(dealerHand);
+		Hand best2 = player2.getBestHand(dealerHand);
+		assertEquals(best2.isFourOfAKind(),true);
+		assertEquals(false, best2.isThreeOfAKind());
+		assertEquals(false, best2.isTwoPair());
+		assertEquals(false, best1.isFourOfAKind());
+		assertEquals(true, best1.isFullHouse());
+		assertEquals(1, best2.compareHands(best1));
+		
+		///assertEquals(expected, actual);
+	}
 
 }
  

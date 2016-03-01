@@ -77,9 +77,15 @@ public class PokerGame {
 	    playerHands.add(playerHand);
 	}
 	dealerHand = new Hand();
-	deck.dealCards(dealerHand,5);
+	deck.dealCards(dealerHand,0);
     }
 	
+	public void nextTurn(){
+		
+		deck.dealCards(dealerHand,1);
+		dealerPanel.add(new JLabel(getCardImage(dealerHand.get(dealerHand.size()-1)))); 
+	}
+
     /**
        Returns an ImageIcon by using the URL class in order to make the 
        ImageIcon web compatible.
@@ -186,6 +192,8 @@ public class PokerGame {
 		if(playerHands.size() == 4)
 		    players.add(player4Panel);
 
+		for(int i = 0; i < 5; i++)
+			nextTurn();
 		/**
 		  Create a list of the best possible hand for each player
 		  using their 2 cards and the dealer's 5

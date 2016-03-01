@@ -24,7 +24,10 @@ public class Hand extends ArrayList<Card>{
 	this.add(a); this.add(b); this.add(c); this.add(d); this.add(e);
     }
 
-
+    public Hand(Card a, Card b){
+	super(2);
+	this.add(a); this.add(b); 
+    }
 
     public Hand(Card a, Card b, Card c, Card d, Card e, Card f, Card g){
 	super(7);
@@ -124,18 +127,11 @@ public class Hand extends ArrayList<Card>{
     */		
     public boolean isFourOfAKind(){
 	ArrayList<Integer> sortedHand=this.sortHand();
-	int quadCounter=0;
-	for(int i = 0;i < 4;i++)
-	    {
-		if(sortedHand.get(i)==sortedHand.get(i+1))
-		    {
-			quadCounter++;
-		    }
-	    }
-	if(quadCounter==3)
-	    return true;
-	else
-	    return false;
+	for(int i = 0;i < sortedHand.size();i++)
+	    if(Collections.frequency(sortedHand, sortedHand.get(i)) == 4)
+                return true;
+	
+        return false;
     }
 
     /**
@@ -143,51 +139,17 @@ public class Hand extends ArrayList<Card>{
     */			
     public boolean isFullHouse(){
 	ArrayList<Integer> sortedHand=this.sortHand();
-	int doubleCounter=0;
-	int tripleCounter=0;
-	for(int i=0;i<4;i++)
-	    {
-		if(sortedHand.get(i)==sortedHand.get(i+1))
-		    {
-			if(tripleCounter==1)
-			    {
-				sortedHand.remove(i+1);
-				sortedHand.remove(i);
-				tripleCounter++;
-				break;
-			    }
-			else
-			    {
-				if(i==1)
-				    tripleCounter=0;
-				else
-				    tripleCounter++;
-			    }
-					
-		    }
-		else
-		    tripleCounter=0;
-				
-			
-	    }
-	if(tripleCounter==2)
-	    {
-		sortedHand.trimToSize();
-		int size=sortedHand.size();
-		for(int i=0;i<(size-1);i++)
-		    {
-			if(sortedHand.get(i)==sortedHand.get(i+1))
-			    {
-				doubleCounter++;
-			    }
-		    }
-	    }
-	else
-	    return false;
-	if(doubleCounter==1)
-	    return true;
-	else
-	    return false;
+	boolean doubleCounter = false;
+	boolean tripleCounter = false;
+	
+	for(int i = 0;i < sortedHand.size();i++){
+            if(Collections.frequency(sortedHand, sortedHand.get(i)) == 2)
+                doubleCounter = true;
+	    if(Collections.frequency(sortedHand, sortedHand.get(i)) == 3)
+                tripleCounter = true;
+	}
+	
+	return doubleCounter && tripleCounter;
     }
 
     /**

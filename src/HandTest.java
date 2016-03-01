@@ -373,7 +373,7 @@ import org.junit.Test;
 		Card card4=new Card(12,"C");
 		Card card5=new Card(12,"S");
 		Hand hand=new Hand(card1,card2,card3,card4,card5);
-		assertEquals(hand.isTwoPair(),true);
+		assertEquals(false, hand.isTwoPair());
 		
 		Card card11=new Card(12,"H");
 		Card card22=new Card(7,"D");

@@ -192,26 +192,14 @@ public class Hand extends ArrayList<Card>{
        Returns boolean for if the hand has three of a kind.
     */			
     public boolean isThreeOfAKind(){
-	if(this.isFullHouse()){
+	if(this.isFullHouse())
 	    return false;
-	}
-		
-	ArrayList<Integer> sortedHand=this.sortHand();
-	int tripleCounter=0;
-	for(int i=0;i<4;i++)
-	    {
-		if(sortedHand.get(i)==sortedHand.get(i+1))
-		    tripleCounter++;
-		else
-		    {
-			if(tripleCounter==1)
-			    tripleCounter=0;
-		    }
-	    }
-	if(tripleCounter==2)
-	    return true;
-	else
-	    return false;
+        
+        ArrayList<Integer> sortedHand=this.sortHand();
+	for(int i = 0;i < sortedHand.size();i++)
+	    if(Collections.frequency(sortedHand, sortedHand.get(i)) == 3)
+                return true;
+        return false;
 		
     }
 	
@@ -219,39 +207,37 @@ public class Hand extends ArrayList<Card>{
        Returns boolean for if the hand has two pairs.
     */		
     public boolean isTwoPair(){
-	ArrayList<Integer> sortedHand=new ArrayList<Integer>();
-	sortedHand=this.sortHand();
-	int pair1Counter=0;
-	int pair2Counter=0;
-	for(int i=0;i<4;i++)
-	    {
-		if(sortedHand.get(i)==sortedHand.get(i+1))
-		    {
-			if(pair1Counter==1)
-			    pair2Counter++;
-			else
-			    pair1Counter++;
-		    }
-	    }
-	return(pair1Counter==1 && pair2Counter==1);
+	ArrayList<Integer> sortedHand=this.sortHand();
+	int numPairs = 0;
+	
+	for(int i = 0;i < sortedHand.size();i++){
+            if(Collections.frequency(sortedHand, sortedHand.get(i)) == 2){
+                numPairs++;
+                i++;
+            }
+	}
+	
+	return numPairs == 2;
     }
 
     /**
        Returns boolean for if the hand has only one pair.
     */			
     public boolean isOnePair(){
-	ArrayList<Integer> sortedHand=new ArrayList<Integer>();
-	sortedHand=this.sortHand();
-	int pairCounter=0;
-	for(int i=0;i<4;i++)
-	    {
-		if(sortedHand.get(i)==sortedHand.get(i+1))
-		    pairCounter++;
-	    }
-	if(pairCounter==1)
-	    return true;
-	else
+        if(this.isFullHouse())
 	    return false;
+        
+	ArrayList<Integer> sortedHand=this.sortHand();
+	int numPairs = 0;
+	
+	for(int i = 0;i < sortedHand.size();i++){
+            if(Collections.frequency(sortedHand, sortedHand.get(i)) == 2){
+                numPairs++;
+                i++;
+            }
+	}
+	
+	return numPairs == 1;
     }
 	
     /**
@@ -326,38 +312,27 @@ public class Hand extends ArrayList<Card>{
 	int handPairIndex=0;
 	int otherHandPairIndex=0;
 		
-	if(isOnePair())
-	    {
-			
-		for(int i=0;i<4;i++)
-		    {
-			if(sortedHand.get(i)==sortedHand.get(i+1)){
-			    handValue=sortedHand.get(i);
-			    handPairIndex=i;
-			}
-			if(otherSortedHand.get(i)==otherSortedHand.get(i+1)){
-			    otherHandValue=otherSortedHand.get(i);
-			    otherHandPairIndex=i; 
-			}
-		    }
-			
-		if(handValue>otherHandValue)
-		    return 1;
-		else if(handValue<otherHandValue)
-		    return 0;
-		else{
-		    return sameHandMethod(otherHand);
-		    /*sortedHand.remove(handPairIndex+1);
-		      sortedHand.remove(handPairIndex);
-		      otherSortedHand.remove(otherHandPairIndex+1);
-		      otherSortedHand.remove(otherHandPairIndex);
-		      int winner = (sortedHand.get(2) > otherSortedHand.get(2)) ? 1 : 0;
-		      return winner;*/
-		}
+	if(isOnePair()){
+            for(int i = 0;i < sortedHand.size();i++){
+                if(Collections.frequency(sortedHand, sortedHand.get(i)) == 2){
+                    handValue = sortedHand.get(i);
+                }
+                if(Collections.frequency(otherSortedHand, otherSortedHand.get(i)) == 2){
+                    otherHandValue = otherSortedHand.get(i);
+                }
+            }
+            
+            if(handValue>otherHandValue)
+                return 1;
+            else if(handValue<otherHandValue)
+                return 0;
+            else{
+                return sameHandMethod(otherHand);
+            }
 	
-	    }
+        }
 		
-	else if(isTwoPair() && !isThreeOfAKind())
+	else if(isTwoPair())
 	    {
 		Integer handCard=0; Integer otherHandCard=0;
 		for(int i=0;i<4;i++)

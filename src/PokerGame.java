@@ -110,6 +110,8 @@ public class PokerGame {
 	   Sets up the Poker game when the client clicks the Play button.
 	*/
 	class playButtonListener implements ActionListener{
+	
+            JButton hideShowButton=new JButton("Hide/Show");
 	    public void actionPerformed(ActionEvent event){
 
 		/**After clicking the play button, make a pop-up
@@ -177,6 +179,10 @@ public class PokerGame {
 		//add labels to all the panels
 		dealerPanel.add(new JLabel("DEALER"));
 		player1Panel.add(new JLabel("PLAYER 1"));
+		
+                hideShowButton.addActionListener(new hideShowButtonListener());
+                player1Panel.add(hideShowButton);
+		
 		player2Panel.add(new JLabel("PLAYER 2"));
 		if(playerHands.size() >= 3)
 		    player3Panel.add(new JLabel("PLAYER 3"));
@@ -239,6 +245,14 @@ public class PokerGame {
 		playButtonFrame.dispose();
 		mainFrame.setVisible(true);
 	    }	
+	    
+	    
+	    class hideShowButtonListener implements ActionListener{
+                public void actionPerformed(ActionEvent event){
+                    if(event.getSource() == hideShowButton)
+                        player2Panel.setVisible(!player2Panel.isVisible());
+                }
+            }
   	}
 }
 

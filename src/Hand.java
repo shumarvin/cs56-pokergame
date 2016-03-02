@@ -108,7 +108,7 @@ public class Hand extends ArrayList<Card>{
 	int straightFlushCounter=0;
 	if(this.isStraight())
 	    {
-		for(int i=0;i<4;i++)
+		for(int i=0;i<4 && i < this.size();i++)
 		    {
 			if(this.get(i).getSuit()==this.get(i+1).getSuit())
 			    straightFlushCounter++;
@@ -159,7 +159,7 @@ public class Hand extends ArrayList<Card>{
 	if(this.isStraightFlush())
 	    return false;
 	int flushCounter=0;
-	for(int i=0;i<4;i++)
+	for(int i=0;i<4 && i <this.size();i++)
 	    {
 		if(this.get(i).getSuit()==this.get(i+1).getSuit())
 		    {
@@ -178,7 +178,7 @@ public class Hand extends ArrayList<Card>{
     public boolean isStraight(){
 	ArrayList<Integer> sortedHand=this.sortHand();
 	int straightCounter=0;
-	for(int i=0;i<4;i++)
+	for(int i=0;i<4 && i < sortedHand.size();i++)
 	    {
 		if(sortedHand.get(i)==(sortedHand.get(i+1)-1))
 		    {

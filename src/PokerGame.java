@@ -17,7 +17,7 @@ public class PokerGame {
     private JLabel winnerLabel;
     private JPanel dealerPanel,player1Panel,player2Panel,player3Panel,
 	player4Panel,bottomPanel;
-    private Hand dealerHand; 
+    private Hand dealerHand, player1, player2, player3, player4; 
     private ArrayList<Hand> playerHands;
     private Deck deck;
     private int numPlayers;
@@ -140,10 +140,10 @@ public class PokerGame {
 		///set up the player and dealer hands
 		playerHands = new ArrayList<Hand>();
 		playerSetUp(numPlayers);
-		Hand player1 = playerHands.get(0);
-		Hand player2 = playerHands.get(1);
-		Hand player3 = new Hand();
-		Hand player4 = new Hand();
+		player1 = playerHands.get(0);
+		player2 = playerHands.get(1);
+		player3 = new Hand();
+		player4 = new Hand();
 		if(playerHands.size() >= 3)
 		    player3 = playerHands.get(2);
 		if(playerHands.size() == 4)
@@ -236,8 +236,8 @@ public class PokerGame {
 		bottomPanel.add(BorderLayout.SOUTH,playAgainButton);
 
 		/**For the GUI, the dealer will be on top while the players
-		   will be in the center and the victory message and replay button
-		   will be on the bottom
+		   will be in the center and the victory message and replay 
+		   button will be on the bottom
 		**/
 		mainFrame.getContentPane().add(BorderLayout.NORTH, dealerPanel);
 		mainFrame.getContentPane().add(BorderLayout.CENTER, players);

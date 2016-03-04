@@ -179,10 +179,6 @@ public class PokerGame {
 		//add labels to all the panels
 		dealerPanel.add(new JLabel("DEALER"));
 		player1Panel.add(new JLabel("PLAYER 1"));
-		
-                hideShowButton.addActionListener(new hideShowButtonListener());
-                player1Panel.add(hideShowButton);
-		
 		player2Panel.add(new JLabel("PLAYER 2"));
 		if(playerHands.size() >= 3)
 		    player3Panel.add(new JLabel("PLAYER 3"));
@@ -232,6 +228,8 @@ public class PokerGame {
 		bottomPanel=new JPanel();
 		playAgainButton=new JButton("Play Again");
 		playAgainButton.addActionListener(new playButtonListener());
+                hideShowButton.addActionListener(new hideShowButtonListener());
+                player1Panel.add(hideShowButton);
 		bottomPanel.add(BorderLayout.NORTH, winnerLabel);
 		bottomPanel.add(BorderLayout.SOUTH,playAgainButton);
 

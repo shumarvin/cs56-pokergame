@@ -11,6 +11,7 @@ public class GetPropertyValues {
 	InputStream inputStream;
 	OutputStream outputStream;
  
+ 	//adds 1 to the current win number of specified player (1 = player1, 2 = player2, etc.)
 	public String updatePropValues(int playerNum) throws IOException {
  
 		try {
@@ -18,12 +19,13 @@ public class GetPropertyValues {
 			String propFileName = "config.properties";
 			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
  
+ 			//if save file (config.properties) exists, update player score on file
 			if (inputStream != null) {
                             prop.load(inputStream);
                             
                             Date time = new Date(System.currentTimeMillis());
     
-                            // get the property value and print it out
+                          
                             String player1Score = prop.getProperty("player1");
                             String player2Score = prop.getProperty("player2");
                             String player3Score = prop.getProperty("player3");
@@ -43,6 +45,7 @@ public class GetPropertyValues {
                             fileOut.close();
 			}
 			
+			//else create a new save file before updating player score
 			 else {
 				createStatistics();
                                 updatePropValues(playerNum);
@@ -56,6 +59,7 @@ public class GetPropertyValues {
 		return result;
 	}
 	
+	//create new save file
 	private void createStatistics() throws IOException{
 	
             Properties prop = new Properties();
@@ -78,6 +82,7 @@ public class GetPropertyValues {
 	
 	}
 	
+	//return a formatted string of players' scores
 	public String getScores()  throws IOException{
             String scores = "";
             try {

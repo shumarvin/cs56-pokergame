@@ -106,7 +106,7 @@ public class PokerGame {
 	return new ImageIcon(url);
     }
     
-    
+    //outputs window with the current number of wins each player has
     class statisticsButtonListener implements ActionListener{
 	    public void actionPerformed(ActionEvent event){
                 String statistics = "";

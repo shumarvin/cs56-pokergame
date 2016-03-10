@@ -7,6 +7,8 @@ public class Card{
 	private int value;
 	private String suit;
 	
+	private boolean isFaceDown = true;
+	
 	/** 2 argument constructor to initialize the value and the suit
 		@param value value of the card ranging from 2-14, 2 being 2 and 14 being ace
 		@param suit suit of the card(hearts,dimaonds,etc.)
@@ -36,5 +38,13 @@ public class Card{
 	public String toString(){
 		String s=""+value+suit;
 		return s;
+	}
+	
+	public boolean getIsFaceDown(){
+            return isFaceDown;
+	}
+	
+	public void flip(){
+            isFaceDown = !isFaceDown;
 	}
 }

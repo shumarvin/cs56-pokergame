@@ -21,7 +21,8 @@ public class PokerGame {
     private ArrayList<Hand> playerHands;
     private Deck deck;
     private int numPlayers;
-    private GetPropertyValues properties = new GetPropertyValues();;
+    private GetPropertyValues properties = new GetPropertyValues();
+    private JButton hideShowButton1, hideShowButton2, hideShowButton3, hideShowButton4;
 	
     /**
        No arg constructor that initializes a new deck.
@@ -110,8 +111,6 @@ public class PokerGame {
 	    public void actionPerformed(ActionEvent event){
                 String statistics = "";
                 
-                
-                
                 try{
 		 statistics = properties.getScores();
 		}catch(IOException e){
@@ -147,7 +146,7 @@ public class PokerGame {
 	*/
 	class playButtonListener implements ActionListener {
 	
-            JButton hideShowButton=new JButton("Hide/Show");
+            
 	    public void actionPerformed(ActionEvent event) {
 
 		/**After clicking the play button, make a pop-up
@@ -185,7 +184,7 @@ public class PokerGame {
 		if(playerHands.size() == 4)
 		    player4 = playerHands.get(3);
 		
-		//set up the panels for the deal and all the players
+		//set up the panels for the dealer and all the players
 		dealerPanel  = new JPanel();
 		player1Panel = new JPanel();
 		player2Panel = new JPanel();
@@ -194,24 +193,24 @@ public class PokerGame {
 
 		/**Get the card images for all the cards in the dealer's
 		   and players' hands and put them in their respective
-		   panels
+		   panels. The Player Cards will start face down 
 		**/
 		for(int i=0;i<dealerHand.size();i++){
                     dealerPanel.add(new JLabel(getCardImage(dealerHand.get(i))));
-                   // dealerPanel.add(new JLabel(getCardImage(new Card(0, "S"))));
+                   
                 }
 		for(int i=0;i<player1.size();i++)
-			player1Panel.add(new JLabel(getCardImage(player1.get(i))));
+			player1Panel.add(new JLabel(getCardImage(new Card(0, "S"))));
 	      
 		for(int i=0;i<player2.size();i++)
-			player2Panel.add(new JLabel(getCardImage(player2.get(i))));
+			player2Panel.add(new JLabel(getCardImage(new Card(0, "S"))));
 		if(playerHands.size() >= 3){
 		    for(int i=0;i<player3.size();i++)
-			player3Panel.add(new JLabel(getCardImage(player3.get(i))));
+			player3Panel.add(new JLabel(getCardImage(new Card(0, "S"))));
 	        }
 		if(playerHands.size() == 4){
 		    for(int i=0;i<player4.size();i++)
-			player4Panel.add(new JLabel(getCardImage(player4.get(i))));
+			player4Panel.add(new JLabel(getCardImage(new Card(0, "S"))));
 		}
 		
 		//add labels to all the panels
@@ -249,7 +248,6 @@ public class PokerGame {
 		Hand bestPlayer4Hand = new Hand();
 
 		//Determine the winners
-
 		int bestHand = 0;
 		for(int i = 1; i < bestPlayerHands.size(); i++){
 			if(bestPlayerHands.get(i).compareHands(bestPlayerHands.get(bestHand)) == 1){
@@ -270,8 +268,26 @@ public class PokerGame {
 		bottomPanel=new JPanel();
 		playAgainButton=new JButton("Play Again");
 		playAgainButton.addActionListener(new playButtonListener());
-                hideShowButton.addActionListener(new hideShowButtonListener());
-                player1Panel.add(hideShowButton);
+                
+                
+                //hide/show buttons
+                hideShowButton1=new JButton("Hide/Show");
+                hideShowButton1.addActionListener(new hideShowButtonListener(player1, 1, player1Panel));
+                player1Panel.add(hideShowButton1);
+                
+                hideShowButton2=new JButton("Hide/Show");
+                hideShowButton2.addActionListener(new hideShowButtonListener(player2, 2, player2Panel));
+                player2Panel.add(hideShowButton2);
+                
+                hideShowButton3=new JButton("Hide/Show");
+                hideShowButton3.addActionListener(new hideShowButtonListener(player3, 3, player3Panel));
+                player3Panel.add(hideShowButton3);
+                
+                hideShowButton4=new JButton("Hide/Show");
+                hideShowButton4.addActionListener(new hideShowButtonListener(player4, 4,  player4Panel));
+                player4Panel.add(hideShowButton4);
+                
+                
 		bottomPanel.add(BorderLayout.NORTH, winnerLabel);
 		bottomPanel.add(BorderLayout.SOUTH,playAgainButton);
 
@@ -288,9 +304,53 @@ public class PokerGame {
 	    
 	    
 	    class hideShowButtonListener implements ActionListener{
+                private Hand playerHand;
+                private int playerNum;
+                private JPanel playerPanel;
+                
+                /**
+                    Constructor
+                    @param playerhand the player Hand tied to this listener
+                    @param playerNum which player (i.e. player 1 or 2) this listener is tied to
+                    @param playerPanel the panel this listener is tied to
+                    **/
+                public hideShowButtonListener(Hand playerHand, int playerNum,JPanel playerPanel){
+                    this.playerHand = playerHand;
+                    this.playerNum = playerNum;
+                    this.playerPanel = playerPanel;
+                }
+                /**
+                    Upon pressing the button, it will remove all the components
+                    from playerPanel, then re-add the cards depending on their flipped
+                    status, the JLabel telling which player it is, and the hide/show button
+                    **/
                 public void actionPerformed(ActionEvent event){
-                    if(event.getSource() == hideShowButton)
-                        player2Panel.setVisible(!player2Panel.isVisible());
+                        //remove all the components
+                        playerPanel.removeAll();
+                        
+                        //if it's face down
+                        if(playerHand.get(0).getIsFaceDown()){
+                            for(int i=0;i<playerHand.size();i++){
+                                playerPanel.add(new JLabel(getCardImage(playerHand.get(i))));
+                                playerHand.get(i).flip();
+                            }
+                        }
+                        //if it's face up
+                        else{
+                            for(int i=0;i<playerHand.size();i++){
+                                playerPanel.add(new JLabel(getCardImage(new Card(0, "S"))));
+                                playerHand.get(i).flip();
+                               
+                            }
+                        }
+                        
+                        //re-add the other components
+                        playerPanel.add(new JLabel("Player " + playerNum));
+                        JButton newHideShowButton = new JButton("Hide/Show");
+                        newHideShowButton.addActionListener(new hideShowButtonListener(playerHand,playerNum,playerPanel));
+                        playerPanel.add(newHideShowButton);
+                        playerPanel.revalidate();
+                        playerPanel.repaint();
                 }
             }
   	}
